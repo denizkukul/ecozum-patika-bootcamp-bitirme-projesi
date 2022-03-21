@@ -11,56 +11,26 @@ type Board = BoardResponse & {
   members: Member[]
 }
 
-type BoardsState = {
-  status: 'idle' | 'loading'
-  boardsData: {
-    [key: number]: Board;
-  }
-  boardIDs: number[]
-}
-
 export type List = ListResponse & {
   cardIDs: number[]
 }
 
-type ListsState = {
-  status: 'idle' | 'loading'
-  listsData: {
-    [key: string]: List;
-  }
-}
-
 export type Card = NestedCardResponse;
-
-type CardsState = {
-  status: 'idle' | 'loading'
-  cardsData: {
-    [key: number]: Card;
-  }
-}
 
 type AppDataState = {
   status: 'idle' | 'loading'
-  boards: BoardsState
-  lists: ListsState
-  cards: CardsState
+  boardIDs: number[]
+  boardsData: { [key: number]: Board }
+  listsData: { [key: string]: List }
+  cardsData: { [key: number]: Card }
 }
 
 const initialState: AppDataState = {
   status: 'idle',
-  boards: {
-    status: 'idle',
-    boardsData: {},
-    boardIDs: []
-  },
-  lists: {
-    status: 'idle',
-    listsData: {},
-  },
-  cards: {
-    status: 'idle',
-    cardsData: {}
-  }
+  boardIDs: [],
+  boardsData: {},
+  listsData: {},
+  cardsData: {}
 }
 
 export const appdataSlice = createSlice(
@@ -69,45 +39,47 @@ export const appdataSlice = createSlice(
     initialState,
     reducers: {},
     extraReducers: (builder) => {
+      //TODO: Find a way to split this
+      //TODO: Add pending and rejected cases
       builder
         .addCase(createBoard.pending, (state) => {
-          state.boards.status = 'loading';
+          // state.boardsData.status = 'loading';
         })
         .addCase(createBoard.fulfilled, (state, action) => {
           const boardID = action.payload.id;
           const board = action.payload;
-          state.boards.boardsData[boardID] = { ...board, listIDs: [], members: [] };
-          state.boards.boardIDs.push(boardID);
-          state.boards.status = 'idle';
+          state.boardsData[boardID] = { ...board, listIDs: [], members: [] };
+          state.boardIDs.push(boardID);
+          // state.status = 'idle';
         })
         .addCase(updateBoard.pending, (state) => {
-          state.boards.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(updateBoard.fulfilled, (state, action) => {
           const boardID = action.meta.arg.id;
           const updateData = action.meta.arg.updateData;
-          let boardData = state.boards.boardsData[boardID];
+          let boardData = state.boardsData[boardID];
           boardData = { ...boardData, ...updateData }
-          state.boards.boardsData[boardID] = boardData
-          state.boards.status = 'idle';
+          state.boardsData[boardID] = boardData
+          // state.status = 'idle';
         })
         .addCase(deleteBoard.pending, (state) => {
-          state.boards.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(deleteBoard.fulfilled, (state, action) => {
           const boardID = action.meta.arg.id;
-          const listIDs = state.boards.boardsData[boardID].listIDs;
+          const listIDs = state.boardsData[boardID].listIDs;
           listIDs.forEach(listID => {
-            const cardIDs = state.lists.listsData[listID].cardIDs;
+            const cardIDs = state.listsData[listID].cardIDs;
             cardIDs.forEach(cardID => {
-              delete state.cards.cardsData[cardID];
+              delete state.cardsData[cardID];
             })
-            delete state.lists.listsData[listID];
+            delete state.listsData[listID];
           })
-          delete state.boards.boardsData[boardID];
-          const index = state.boards.boardIDs.indexOf(boardID);
-          state.boards.boardIDs.splice(index, 1);
-          state.boards.status = 'idle';
+          delete state.boardsData[boardID];
+          const index = state.boardIDs.indexOf(boardID);
+          state.boardIDs.splice(index, 1);
+          // state.status = 'idle';
         })
         .addCase(getBoard.pending, (state) => {
           state.status = 'loading';
@@ -132,17 +104,17 @@ export const appdataSlice = createSlice(
             })
             cards.forEach(card => {
               cardIDs.push(card.id);
-              state.cards.cardsData[card.id] = card;
+              state.cardsData[card.id] = card;
             })
             const listData = { ...baseListData, cardIDs }
-            state.lists.listsData[list.id] = listData;
+            state.listsData[list.id] = listData;
           })
           const boardData = { ...baseBoardData, listIDs, members }
-          state.boards.boardsData[boardID] = boardData;
+          state.boardsData[boardID] = boardData;
           state.status = 'idle';
         })
         .addCase(getBoardList.pending, (state) => {
-          state.boards.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(getBoardList.fulfilled, (state, action) => {
           const newBoardIDs: number[] = [];
@@ -151,49 +123,49 @@ export const appdataSlice = createSlice(
             newBoardIDs.push(board.id);
             newBoardsData[board.id] = { ...board, listIDs: [], members: [] };
           });
-          state.boards.boardIDs = newBoardIDs;
-          state.boards.boardsData = newBoardsData;
-          state.boards.status = 'idle';
+          state.boardIDs = newBoardIDs;
+          state.boardsData = newBoardsData;
+          // state.status = 'idle';
         })
         .addCase(createList.pending, (state) => {
-          state.lists.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(createList.fulfilled, (state, action) => {
           const boardID = action.meta.arg.boardId;
           const listID = action.payload.id;
           const list = action.payload;
-          state.lists.listsData[listID] = { ...list, cardIDs: [] };
-          state.boards.boardsData[boardID].listIDs.push(listID);
-          state.lists.status = 'idle';
+          state.listsData[listID] = { ...list, cardIDs: [] };
+          state.boardsData[boardID].listIDs.push(listID);
+          // state.status = 'idle';
         })
         .addCase(updateList.pending, (state) => {
-          state.lists.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(updateList.fulfilled, (state, action) => {
           const listID = action.meta.arg.id;
           const updateData = action.meta.arg.updateData;
-          let listData = state.lists.listsData[listID];
+          let listData = state.listsData[listID];
           listData = { ...listData, ...updateData };
-          state.lists.listsData[listID] = listData;
-          state.lists.status = 'idle';
+          state.listsData[listID] = listData;
+          // state.status = 'idle';
         })
         .addCase(deleteList.pending, (state) => {
-          state.lists.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(deleteList.fulfilled, (state, action) => {
           const listID = action.meta.arg.id;
-          const cardIDs = state.lists.listsData[listID].cardIDs;
-          const boardID = state.lists.listsData[listID].boardId;
-          delete state.lists.listsData[listID];
+          const cardIDs = state.listsData[listID].cardIDs;
+          const boardID = state.listsData[listID].boardId;
+          delete state.listsData[listID];
           cardIDs.forEach((cardID) => {
-            delete state.cards.cardsData[cardID];
+            delete state.cardsData[cardID];
           })
-          const index = state.boards.boardsData[boardID].listIDs.indexOf(listID);
-          state.boards.boardsData[boardID].listIDs.splice(index, 1);
-          state.lists.status = 'idle';
+          const index = state.boardsData[boardID].listIDs.indexOf(listID);
+          state.boardsData[boardID].listIDs.splice(index, 1);
+          // state.status = 'idle';
         })
         .addCase(getList.pending, (state) => {
-          state.lists.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(getList.fulfilled, (state, action) => {
           const { cards, ...baseListData } = { ...action.payload }
@@ -201,77 +173,77 @@ export const appdataSlice = createSlice(
           const cardIDs: number[] = [];
           cards.forEach(card => {
             cardIDs.push(card.id);
-            state.cards.cardsData[card.id] = card;
+            state.cardsData[card.id] = card;
           })
           const listData = { ...baseListData, cardIDs }
-          state.lists.listsData[listID] = listData;
-          state.lists.status = 'idle';
+          state.listsData[listID] = listData;
+          // state.status = 'idle';
         })
         .addCase(createCard.pending, (state) => {
-          state.cards.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(createCard.fulfilled, (state, action) => {
           const listID = action.meta.arg.listId;
           const cardID = action.payload.id;
           const card = action.payload;
-          state.cards.cardsData[cardID] = { ...card };
-          state.lists.listsData[listID].cardIDs.push(cardID);
-          state.cards.status = 'idle';
+          state.cardsData[cardID] = { ...card };
+          state.listsData[listID].cardIDs.push(cardID);
+          // state.status = 'idle';
         })
         .addCase(updateCard.pending, (state) => {
-          state.cards.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(updateCard.fulfilled, (state, action) => {
           const cardID = action.meta.arg.id;
           const updateData = action.meta.arg.updateData;
-          let cardData = state.cards.cardsData[cardID];
+          let cardData = state.cardsData[cardID];
           cardData = { ...cardData, ...updateData };
-          state.cards.cardsData[cardID] = cardData;
-          state.cards.status = 'idle';
+          state.cardsData[cardID] = cardData;
+          // state.status = 'idle';
         })
         .addCase(deleteCard.pending, (state) => {
-          state.cards.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(deleteCard.fulfilled, (state, action) => {
           const cardID = action.meta.arg.id;
-          const listID = state.cards.cardsData[cardID].listId;
-          delete state.cards.cardsData[cardID];
-          const index = state.lists.listsData[listID].cardIDs.indexOf(cardID);
-          state.lists.listsData[listID].cardIDs.splice(index, 1);
-          state.cards.status = 'idle';
+          const listID = state.cardsData[cardID].listId;
+          delete state.cardsData[cardID];
+          const index = state.listsData[listID].cardIDs.indexOf(cardID);
+          state.listsData[listID].cardIDs.splice(index, 1);
+          // state.status = 'idle';
         })
         .addCase(getCard.pending, (state) => {
-          state.cards.status = 'loading';
+          // state.status = 'loading';
         })
         .addCase(getCard.fulfilled, (state, action) => {
           const cardID = action.payload.id;
-          let card = state.cards.cardsData[cardID]
+          let card = state.cardsData[cardID]
           card = action.payload;
-          state.lists.listsData[card.listId].cardIDs.push(cardID);
-          state.cards.status = 'idle';
+          state.listsData[card.listId].cardIDs.push(cardID);
+          // state.status = 'idle';
         })
         .addCase(changeListOrder.fulfilled, (state, action) => {
           const boardID = action.meta.arg.boardID;
           const listIDs = action.meta.arg.listIDs;
-          state.boards.boardsData[boardID].listIDs = listIDs;
+          state.boardsData[boardID].listIDs = listIDs;
         })
         .addCase(changeCardOrder.fulfilled, (state, action) => {
           const listID = action.meta.arg.listID;
           const cardIDs = action.meta.arg.cardIDs;
-          state.lists.listsData[listID].cardIDs = cardIDs;
+          state.listsData[listID].cardIDs = cardIDs;
         })
         .addCase(changeCardParentList.fulfilled, (state, action) => {
           const sourceListID = action.meta.arg.sourceListID;
           const sourceCardIDs = action.meta.arg.sourceCardIDs;
-          state.lists.listsData[sourceListID].cardIDs = sourceCardIDs;
+          state.listsData[sourceListID].cardIDs = sourceCardIDs;
           const targetListID = action.meta.arg.targetListID;
           const targetCardIDs = action.meta.arg.targetCardIDs;
-          state.lists.listsData[targetListID].cardIDs = targetCardIDs;
+          state.listsData[targetListID].cardIDs = targetCardIDs;
         })
         .addCase(removeMember.fulfilled, (state, action) => {
           const boardID = action.meta.arg.boardID;
           const memberID = action.meta.arg.memberID;
-          const membersData = state.boards.boardsData[boardID].members;
+          const membersData = state.boardsData[boardID].members;
           const memberIndex = membersData.findIndex(member => member.BoardMember.id === memberID);
           membersData.splice(memberIndex, 1);
         })
@@ -287,6 +259,7 @@ export const changeListOrder = createAsyncThunk(
     })
   }
 )
+
 
 export const changeCardOrder = createAsyncThunk(
   'changeCardOrder',
@@ -425,15 +398,12 @@ export const getMemberList = createAsyncThunk(
 
 export const appdataReducer = appdataSlice.reducer;
 
-export const selectBoards = (state: RootState) => state.appdata.boards;
-export const selectBoardsData = (state: RootState) => state.appdata.boards.boardsData;
-export const selectBoardIDs = (state: RootState) => state.appdata.boards.boardIDs;
-export const selectBoardsStatus = (state: RootState) => state.appdata.boards.status;
+export const selectAppStatus = (state: RootState) => state.appdata.status;
+export const selectBoardsData = (state: RootState) => state.appdata.boardsData;
+export const selectBoardIDs = (state: RootState) => state.appdata.boardIDs;
 
-export const selectLists = (state: RootState) => state.appdata.lists;
-export const selectListsData = (state: RootState) => state.appdata.lists.listsData;
-export const selectListsStatus = (state: RootState) => state.appdata.lists.status;
+export const selectListsData = (state: RootState) => state.appdata.listsData;
+export const selectListsStatus = (state: RootState) => state.appdata.status;
 
-export const selectCards = (state: RootState) => state.appdata.cards;
-export const selectCardsData = (state: RootState) => state.appdata.cards.cardsData;
-export const selectCardsStatus = (state: RootState) => state.appdata.cards.status;
+export const selectCardsData = (state: RootState) => state.appdata.cardsData;
+export const selectCardsStatus = (state: RootState) => state.appdata.status;

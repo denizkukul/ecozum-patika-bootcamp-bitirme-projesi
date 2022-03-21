@@ -5,18 +5,19 @@ import { Loading } from '../components/Loading'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { BoardRequest } from '../services/server/controllers/board'
-import { createBoard, getBoardList, selectBoards } from '../store/appdataSlice'
+import { createBoard, getBoardList, selectAppStatus, selectBoardIDs } from '../store/appdataSlice'
 import { logout, selectAuth } from '../store/authSlice'
 
 
 export const BoardListPage = () => {
-  const boards = useAppSelector(selectBoards);
+  const appStatus = useAppSelector(selectAppStatus);
+  const boardIDs = useAppSelector(selectBoardIDs);
   const auth = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getBoardList());
-  }, [])
+  }, [dispatch])
 
   const handleLogout = () => {
     dispatch(logout())
@@ -26,7 +27,7 @@ export const BoardListPage = () => {
   }
 
   return (
-    boards.status === 'idle' ?
+    appStatus === 'idle' ?
       <div className='boardlist-page' style={{ flex: 1 }}>
         <div className='boardlist-header'>
           <div style={{ marginLeft: 'auto', paddingLeft: '150px' }}>Board List Page</div>
@@ -35,7 +36,7 @@ export const BoardListPage = () => {
         </div>
         <div className='boardlinks-container'>
           {
-            boards.boardIDs.map(boardID => {
+            boardIDs.map(boardID => {
               return (
                 <BoardLink key={boardID} boardID={boardID} />
               )

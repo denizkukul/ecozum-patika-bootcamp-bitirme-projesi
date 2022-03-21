@@ -6,7 +6,7 @@ import { Loading } from "../components/Loading"
 import { useAppDispatch } from "../hooks/useAppDispatch"
 import { useAppSelector } from "../hooks/useAppSelector"
 import { Member, MemberRequest } from "../services/server/controllers/member/types"
-import { addMember, deleteBoard, getBoard, removeMember, selectBoards } from "../store/appdataSlice"
+import { addMember, deleteBoard, getBoard, removeMember, selectAppStatus, selectBoardsData } from "../store/appdataSlice"
 import { logout, selectAuth } from "../store/authSlice"
 
 const UserCard: React.FC<Member> = ({ ...member }) => {
@@ -21,7 +21,8 @@ const UserCard: React.FC<Member> = ({ ...member }) => {
 
 export const BoardContentPage = () => {
   const dispatch = useAppDispatch();
-  const boards = useAppSelector(selectBoards);
+  const boardsData = useAppSelector(selectBoardsData);
+  const appStatus = useAppSelector(selectAppStatus);
   const auth = useAppSelector(selectAuth);
   const params = useParams();
   const boardID = Number(params.boardID);
@@ -29,7 +30,7 @@ export const BoardContentPage = () => {
 
   useEffect(() => {
     dispatch(getBoard(boardID));
-  }, [])
+  }, [dispatch, boardID])
 
   const handleLogout = () => {
     dispatch(logout())
@@ -48,11 +49,11 @@ export const BoardContentPage = () => {
   }
 
   return (
-    boards.status === 'idle' ?
+    appStatus === 'idle' ?
       <div className='boardcontent-page' style={{ flex: 1, position: 'relative' }}>
         <div className='board-header'>
           <Link to={`/user${auth.value.userID}`}>Back to Boards</Link>
-          <div style={{ marginLeft: 'auto', paddingLeft: '150px' }} className='boardtitle'>{boards.boardsData[boardID].title}</div>
+          <div style={{ marginLeft: 'auto', paddingLeft: '150px' }} className='boardtitle'>{boardsData[boardID].title}</div>
           <div style={{ marginLeft: 'auto', textTransform: 'capitalize' }} className='username'>{auth.value.username}</div>
           <button onClick={handleLogout}>Logout</button>
           <button onClick={handleShowMembers}>Board Members</button>
@@ -61,7 +62,7 @@ export const BoardContentPage = () => {
             showMembers &&
             <div style={{ position: 'absolute', backgroundColor: 'white' }}>
               {
-                boards.boardsData[boardID].members.map((member) => {
+                boardsData[boardID].members.map((member) => {
                   return (
                     <UserCard key={member.id} {...member} />
                   )
@@ -71,12 +72,8 @@ export const BoardContentPage = () => {
             </div>
           }
         </div>
-        <ListContainer listIDs={boards.boardsData[boardID].listIDs} boardID={boardID} />
+        <ListContainer listIDs={boardsData[boardID].listIDs} boardID={boardID} />
       </div > :
       <Loading />
   )
-}
-
-function removeUser(): any {
-  throw new Error("Function not implemented.")
 }
