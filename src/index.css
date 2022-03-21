@@ -1,13 +1,161 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+html,
+body,
+div,
+form,
+p,
+pre
+{
+    font-size: 100%;
+    font-weight: normal;
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    margin: 0;
+    padding: 0;
+
+    vertical-align: baseline;
+
+    border: 0;
+    outline: 0;
+    background: transparent;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+img,
+svg
+{
+    border: 0;
+}
+
+body {
+  font-family: 'Poppins';
+  background-color: rgb(190, 190, 190);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-container {
+  width: 90vw;
+  height: 80vh;
+  outline: 1px solid black;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(214, 214, 214);
+}
+
+h2 {
+  text-align: center;
+}
+
+.login-form, .register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  padding: 5px;
+  margin: 5px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 5px;
+  margin: 5px;
+}
+
+.board-link-container {
+  text-decoration: none;
+  color: blue;
+  margin: 30px;
+  background-color: white;
+}
+
+.board-link {
+  width: 100px;
+  height: 100px;
+  outline: 1px solid black;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.board-link input {
+  width: 90%;
+}
+
+.boardlist-header, .board-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-size: 25px;
+  align-items: center;
+}
+
+.boardlist-header .username {
+  text-transform: capitalize;
+}
+
+.boardlist-header button {
+  font-size: 17px;
+}
+
+.boardlinks-container {
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+}
+
+.list-container {
+  display: flex;
+  height: 70% ;
+}
+
+.list-container.dragingover {
+  background-color: rgb(46, 46, 46);
+}
+
+.list {
+  background-color: gray;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin: 0 20px;
+  height: 100%;
+}
+
+.list.dragging {
+  background-color: rgb(182, 182, 182);
+}
+
+
+.cards-container.draggingover {
+  background-color: rgb(46, 46, 46);
+}
+
+.list-title {
+  font-size: larger;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  background-color: rgb(82, 82, 82);
+  margin-bottom: 5px;
+}
+
+.card {
+  background-color: white;
+  min-height: 80px;
+}
+
+.card-title {
+  font-size: large;
+  text-align: center;
+  background-color: rgb(82, 82, 82);
+  color: white;
 }

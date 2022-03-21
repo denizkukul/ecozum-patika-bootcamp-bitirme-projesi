@@ -1,9 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { authReducer } from './authSlice';
+import { appdataReducer } from './appdataSlice';
+
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    auth: authReducer,
+    appdata: appdataReducer
   },
 });
 
