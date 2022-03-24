@@ -5,6 +5,7 @@ import { changeCardOrder, changeCardParentList, changeListOrder, createList, sel
 import { CreateListForm } from "./CreateListForm"
 import { List } from "./List"
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { Box } from "@mui/material"
 
 type ListContainerProps = {
   boardID: number;
@@ -71,7 +72,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="board" direction="horizontal" type="list">
         {(provided, snapshot) => (
-          <div className={`list-container ${snapshot.isDraggingOver ? 'dragingover' : ''}`} {...provided.droppableProps} ref={provided.innerRef}>
+          <Box sx={{ overflow: 'auto', p: 2, height: '100%', display: 'flex', flex: 1, borderRadius: '10px' }}{...provided.droppableProps} ref={provided.innerRef}>
             {
               listIDs.map((listID, index) => {
                 return <List key={listID} index={index} {...lists[listID]} />
@@ -79,7 +80,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }
             }
             {provided.placeholder}
             <CreateListForm boardID={boardID} onSubmit={handleCreateList} />
-          </div>
+          </Box>
         )}
       </Droppable>
     </DragDropContext >

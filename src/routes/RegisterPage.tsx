@@ -1,4 +1,6 @@
+import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom'
+import { Header } from '../components/Header';
 import { Loading } from '../components/Loading';
 import { RegisterForm } from '../components/RegisterForm';
 import { useAppDispatch } from '../hooks/useAppDispatch';
@@ -15,16 +17,19 @@ export const RegisterPage = () => {
 
   return (
     auth.status === 'idle' ?
-      <div>
-        <h2>Register Page</h2>
-        <RegisterForm onSubmit={handleRegister} />
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
-          <div>Already have an account ?</div>
-          <Link to='/login'>
-            <div>Login Here</div>
-          </Link>
-        </div>
-      </div> :
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', overflow: 'auto' }}>
+        <Header>
+          <Typography color='primary' sx={{ fontFamily: 'Poppins', fontSize: '30px', fontWeight: '700', textAlign: 'center', flex: 1 }}>Scrumboard App</Typography>
+        </Header>
+        <Box sx={{ flex: 1, p: 4 }}>
+          <RegisterForm onSubmit={handleRegister}>
+            <Box display='flex' my={2}>
+              <Typography mr={2}>Already have an account ? </Typography>
+              <Typography color='primary' ><Link to='/login'>Login</Link></Typography>
+            </Box>
+          </RegisterForm>
+        </Box>
+      </Box> :
       <Loading />
   )
 }

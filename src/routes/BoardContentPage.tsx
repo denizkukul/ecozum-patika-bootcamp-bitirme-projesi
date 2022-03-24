@@ -1,23 +1,15 @@
+import { Box, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import { AddMemberForm } from "../components/AddMemberForm"
+import { Header } from "../components/Header"
 import { ListContainer } from "../components/ListContainer"
 import { Loading } from "../components/Loading"
 import { useAppDispatch } from "../hooks/useAppDispatch"
 import { useAppSelector } from "../hooks/useAppSelector"
-import { Member, MemberRequest } from "../services/server/controllers/member/types"
-import { addMember, deleteBoard, getBoard, removeMember, selectAppStatus, selectBoardsData } from "../store/appdataSlice"
-import { logout, selectAuth } from "../store/authSlice"
-
-const UserCard: React.FC<Member> = ({ ...member }) => {
-  const dispatch = useAppDispatch();
-  const handleRemoveMember = () => {
-    dispatch(removeMember({ memberID: member.BoardMember.id, boardID: member.BoardMember.boardId }))
-  }
-  return (
-    <div>{member.username}<button onClick={handleRemoveMember}>Remove</button></div>
-  )
-}
+import { getBoard, selectAppStatus, selectBoardsData } from "../store/appdataSlice"
+import { selectAuth } from "../store/authSlice"
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import { BoardMenu } from "../components/BoardMenu"
 
 export const BoardContentPage = () => {
   const dispatch = useAppDispatch();
@@ -26,54 +18,29 @@ export const BoardContentPage = () => {
   const auth = useAppSelector(selectAuth);
   const params = useParams();
   const boardID = Number(params.boardID);
-  const [showMembers, setShowMembers] = useState(false)
 
   useEffect(() => {
     dispatch(getBoard(boardID));
   }, [dispatch, boardID])
 
-  const handleLogout = () => {
-    dispatch(logout())
-  }
-
-  const handleShowMembers = () => {
-    setShowMembers(prev => !prev);
-  }
-
-  const handleDeleteBoard = () => {
-    dispatch(deleteBoard({ id: boardID }));
-  }
-
-  const handleAddMember = (formValues: MemberRequest) => {
-    dispatch(addMember(formValues))
-  }
-
   return (
     appStatus === 'idle' ?
-      <div className='boardcontent-page' style={{ flex: 1, position: 'relative' }}>
-        <div className='board-header'>
-          <Link to={`/user${auth.value.userID}`}>Back to Boards</Link>
-          <div style={{ marginLeft: 'auto', paddingLeft: '150px' }} className='boardtitle'>{boardsData[boardID].title}</div>
-          <div style={{ marginLeft: 'auto', textTransform: 'capitalize' }} className='username'>{auth.value.username}</div>
-          <button onClick={handleLogout}>Logout</button>
-          <button onClick={handleShowMembers}>Board Members</button>
-          <button onClick={handleDeleteBoard}>Delete Board</button>
-          {
-            showMembers &&
-            <div style={{ position: 'absolute', backgroundColor: 'white' }}>
-              {
-                boardsData[boardID].members.map((member) => {
-                  return (
-                    <UserCard key={member.id} {...member} />
-                  )
-                })
-              }
-              <AddMemberForm boardId={boardID} onSubmit={handleAddMember} />
-            </div>
-          }
-        </div>
-        <ListContainer listIDs={boardsData[boardID].listIDs} boardID={boardID} />
-      </div > :
+      <Box sx={{ flex: '1 1 0', position: 'relative', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}>
+        <Header>
+          <Box sx={{ height: '40px', width: '110px', position: 'absolute', left: '20px' }}>
+            <Link to={`/user${auth.value.userID}`} style={{ display: 'block', height: '100%', width: '100%', textDecoration: 'none' }}>
+              <Box sx={{ ':hover': { bgcolor: 'lightgray' }, bgcolor: 'whitesmoke', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '20px' }}><ArrowBackRoundedIcon color='primary' /><Typography color='primary' sx={{ pl: '5px', fontFamily: 'Poppins', fontWeight: '700' }}>Boards</Typography></Box>
+            </Link>
+          </Box>
+          <Typography color='primary' sx={{ fontFamily: 'Poppins', fontSize: '25px', fontWeight: '700', textAlign: 'center', flex: 1 }}>{boardsData[boardID].title}</Typography>
+          <Box mr={2}>
+            <BoardMenu boardID={boardID} />
+          </Box>
+        </Header>
+        <Box sx={{ flex: '1 1 0', display: 'flex', justifyContent: 'center', pt: 1, flexDirection: 'column', overflow: 'hidden' }}>
+          <ListContainer listIDs={boardsData[boardID].listIDs} boardID={boardID} />
+        </Box>
+      </Box> :
       <Loading />
   )
 }

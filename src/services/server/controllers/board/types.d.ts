@@ -1,5 +1,5 @@
 import { NestedListResponse } from "../list";
-import { Member } from "../member";
+import { Member, NestedMemberResponse } from "../member";
 
 export type BoardResponse = {
   id: number
@@ -9,15 +9,17 @@ export type BoardResponse = {
   createdAt: string
 }
 
+export type BoardOwner = {
+  id: number
+  username: string
+  createdAt: string
+  updatedAt: string
+}
+
 export type NestedBoardResponse = BoardResponse & {
-  owner: {
-    id: number
-    username: string
-    createdAt: string
-    updatedAt: string
-  }
+  owner: BoardOwner
   lists: NestedListResponse[]
-  members: Member[]
+  members: NestedMemberResponse[]
 }
 
 export type BoardRequest = Pick<Board, 'title'>

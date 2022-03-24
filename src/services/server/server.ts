@@ -6,9 +6,14 @@ export const endpoints = {
   register: '/auth/register',
   login: '/auth/login',
   board: '/board',
+  member: '/board-member',
   list: '/list',
   card: '/card',
-  member: '/board-member'
+  comment: '/comment',
+  label: '/card-label',
+  checklist: '/checklist',
+  checklistItem: '/checklist-item',
+  labelOptions: '/label'
 }
 
 const token = getCookie('token') || sessionStorage.getItem('token');

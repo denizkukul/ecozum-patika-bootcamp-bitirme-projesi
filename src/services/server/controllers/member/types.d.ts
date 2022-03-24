@@ -1,18 +1,17 @@
-export type BoardMember = {
-  BoardMember: {
-    id: number
-    createdAt: string
-    updatedAt: string
-    boardId: number
-    userId: number
-  }
+export type MemberResponse = {
+  id: number
+  boardId: number
+  userId: number
+  updatedAt: string
+  createdAt: string
 }
 
-export type Member = BoardMember & {
-  id: number,
+export type NestedMemberResponse = {
+  id: number
   username: string
   createdAt: string
   updatedAt: string
+  BoardMember: MemberResponse
 }
 
 export type MemberRequest = {

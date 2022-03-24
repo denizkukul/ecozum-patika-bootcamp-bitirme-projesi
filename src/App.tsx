@@ -1,18 +1,18 @@
 import { useAppSelector } from './hooks/useAppSelector';
-import { selectAuth } from './store/authSlice';
-import { BrowserRouter, Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
-import { LoginPage } from './routes/LoginPage';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { RegisterPage } from './routes/RegisterPage';
 import { BoardListPage } from './routes/BoardListPage';
 import { BoardContentPage } from './routes/BoardContentPage';
 import { RequireAuth } from './components/RequireAuth';
-
+import { selectAuth } from './store/authSlice';
+import { LoginPage } from './routes/LoginPage';
+import Box from '@mui/material/Box/Box';
 
 const App: React.FC = () => {
   const auth = useAppSelector(selectAuth);
 
   return (
-    <div className='app-container'>
+    <Box minHeight={'100vh'} display='flex' flexDirection='column'>
       <BrowserRouter>
         <Routes>
           <Route path='*' element={<Navigate to={auth.value.userID ? `user${auth.value.userID}` : 'login'} />} />
@@ -25,7 +25,7 @@ const App: React.FC = () => {
           </Route>
         </Routes>
       </BrowserRouter >
-    </div>
+    </Box>
   );
 }
 

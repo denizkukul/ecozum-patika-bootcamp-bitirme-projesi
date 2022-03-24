@@ -1,21 +1,33 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import boardRequests, { BoardResponse, BoardRequest } from '../services/server/controllers/board';
-import memberRequests, { Member } from '../services/server/controllers/member';
+import memberRequests, { MemberResponse, MemberRequest } from '../services/server/controllers/member';
 import listRequests, { CreateListRequest, ListResponse, UpdateListRequest } from '../services/server/controllers/list';
-import cardRequests, { CreateCardRequest, NestedCardResponse, UpdateCardRequest } from '../services/server/controllers/card';
+import cardRequests, { CardResponse, CreateCardRequest, NestedCardResponse, UpdateCardRequest } from '../services/server/controllers/card';
+import labelRequests, { AddLabelRequest, LabelOptionResponse, LabelResponse } from '../services/server/controllers/label';
+import commentRequests, { CommentRequest } from '../services/server/controllers/comment';
+import checklistRequests from '../services/server/controllers/checklist';
+import checklistItemRequests, { CreateChecklistItemRequest, UpdateChecklistItemRequest } from '../services/server/controllers/checklistitem';
+
+
 import { RootState } from './store';
-import { MemberRequest } from '../services/server/controllers/member/types';
+import { BoardOwner } from '../services/server/controllers/board/types';
+import { OptionalCardProperties } from '../services/server/controllers/card/types';
+
+type Member = MemberResponse & {
+  username: string
+}
 
 type Board = BoardResponse & {
   listIDs: number[]
   members: Member[]
+  owner?: BoardOwner
 }
 
 export type List = ListResponse & {
   cardIDs: number[]
 }
 
-export type Card = NestedCardResponse;
+export type Card = CardResponse & OptionalCardProperties;
 
 type AppDataState = {
   status: 'idle' | 'loading'
@@ -23,6 +35,7 @@ type AppDataState = {
   boardsData: { [key: number]: Board }
   listsData: { [key: string]: List }
   cardsData: { [key: number]: Card }
+  labelOptions: { [key: number]: LabelOptionResponse }
 }
 
 const initialState: AppDataState = {
@@ -30,7 +43,8 @@ const initialState: AppDataState = {
   boardIDs: [],
   boardsData: {},
   listsData: {},
-  cardsData: {}
+  cardsData: {},
+  labelOptions: {}
 }
 
 export const appdataSlice = createSlice(
@@ -104,12 +118,20 @@ export const appdataSlice = createSlice(
             })
             cards.forEach(card => {
               cardIDs.push(card.id);
-              state.cardsData[card.id] = card;
+              const { comments, labels, checklists, duedate, ...baseCardData } = { ...card };
+              const newLabels = labels?.map(label => { return { id: label.CardLabel.id, labelID: label.CardLabel.labelId } });
+              const newComments = comments?.map(comment => { return { id: comment.id, message: comment.message, authorname: comment.author.username } });
+              const newChecklists = checklists?.map(checklist => {
+                const newChecklistItems = checklist.items.map(item => { return { id: item.id, isChecked: item.isChecked, title: item.title } })
+                return { id: checklist.id, cardID: checklist.cardId, title: checklist.title, items: newChecklistItems }
+              })
+              state.cardsData[card.id] = { ...baseCardData, comments: newComments, labels: newLabels, checklists: newChecklists };
             })
             const listData = { ...baseListData, cardIDs }
             state.listsData[list.id] = listData;
           })
-          const boardData = { ...baseBoardData, listIDs, members }
+          const memberState = members.map((member) => { return { username: member.username, ...member.BoardMember } })
+          const boardData = { ...baseBoardData, listIDs, members: memberState }
           state.boardsData[boardID] = boardData;
           state.status = 'idle';
         })
@@ -173,7 +195,10 @@ export const appdataSlice = createSlice(
           const cardIDs: number[] = [];
           cards.forEach(card => {
             cardIDs.push(card.id);
-            state.cardsData[card.id] = card;
+            const { comments, labels, checklists, duedate, ...baseCardData } = { ...card };
+            const newLabels = labels?.map(label => { return { id: label.CardLabel.id, labelID: label.CardLabel.labelId } });
+            const newComments = comments?.map(comment => { return { id: comment.id, message: comment.message, authorname: comment.author.username } });
+            state.cardsData[card.id] = { ...baseCardData, comments: newComments, labels: newLabels };
           })
           const listData = { ...baseListData, cardIDs }
           state.listsData[listID] = listData;
@@ -216,10 +241,11 @@ export const appdataSlice = createSlice(
           // state.status = 'loading';
         })
         .addCase(getCard.fulfilled, (state, action) => {
-          const cardID = action.payload.id;
-          let card = state.cardsData[cardID]
-          card = action.payload;
-          state.listsData[card.listId].cardIDs.push(cardID);
+          let card = action.payload;
+          const { comments, labels, checklists, duedate, ...baseCardData } = { ...card };
+          const newLabels = labels?.map(label => { return { id: label.CardLabel.id, labelID: label.CardLabel.labelId } });
+          const newComments = comments?.map(comment => { return { id: comment.id, message: comment.message, authorname: comment.author.username } });
+          state.cardsData[card.id] = { ...baseCardData, comments: newComments, labels: newLabels };
           // state.status = 'idle';
         })
         .addCase(changeListOrder.fulfilled, (state, action) => {
@@ -240,12 +266,88 @@ export const appdataSlice = createSlice(
           const targetCardIDs = action.meta.arg.targetCardIDs;
           state.listsData[targetListID].cardIDs = targetCardIDs;
         })
+        .addCase(addMember.fulfilled, (state, action) => {
+          const boardID = action.meta.arg.boardId;
+          const username = action.meta.arg.username;
+          state.boardsData[boardID].members.push({ username, ...action.payload })
+        })
         .addCase(removeMember.fulfilled, (state, action) => {
           const boardID = action.meta.arg.boardID;
           const memberID = action.meta.arg.memberID;
           const membersData = state.boardsData[boardID].members;
-          const memberIndex = membersData.findIndex(member => member.BoardMember.id === memberID);
+          const memberIndex = membersData.findIndex(member => member.id === memberID);
           membersData.splice(memberIndex, 1);
+        })
+        .addCase(getLabelOptions.fulfilled, (state, action) => {
+          const labelOptions = action.payload;
+          labelOptions.forEach(option => {
+            state.labelOptions[option.id] = option;
+          })
+        })
+        .addCase(addLabel.fulfilled, (state, action) => {
+          const cardID = action.meta.arg.cardId;
+          let labels = state.cardsData[cardID].labels;
+          !labels && (labels = []);
+          labels.push({ id: action.payload.id, labelID: action.payload.labelId });
+        })
+        .addCase(removeLabel.fulfilled, (state, action) => {
+          const labelID = action.meta.arg.labelID;
+          const cardID = action.meta.arg.cardID;
+          const index = state.cardsData[cardID].labels?.findIndex(label => label.id)!;
+          state.cardsData[cardID].labels?.splice(index, 1);
+        })
+        .addCase(addComment.fulfilled, (state, action) => {
+          const cardID = action.meta.arg.payload.cardId;
+          const message = action.meta.arg.payload.message;
+          const username = action.meta.arg.username;
+          state.cardsData[cardID].comments?.push({ id: action.payload.id, message, authorname: username })
+        })
+        .addCase(createChecklist.fulfilled, (state, action) => {
+          const cardID = action.meta.arg.cardId;
+          const title = action.meta.arg.title;
+          let checklists = state.cardsData[cardID].checklists;
+          !checklists && (checklists = []);
+          checklists.push({ id: action.payload.id, items: [], title });
+        })
+        .addCase(editChecklist.fulfilled, (state, action) => {
+          const checklistID = action.meta.arg.checklistID;
+          const cardID = action.meta.arg.cardID;
+          const title = action.meta.arg.title;
+          const checklists = state.cardsData[cardID].checklists;
+          const checklist = checklists?.find(checklist => checklist.id === checklistID);
+          checklist && (checklist.title = title);
+        })
+        .addCase(deleteChecklist.fulfilled, (state, action) => {
+          const checklistID = action.meta.arg.checklistID;
+          const cardID = action.meta.arg.cardID;
+          const checklists = state.cardsData[cardID].checklists;
+          const checklistIndex = checklists?.findIndex(checklist => checklist.id === checklistID)!;
+          checklists?.splice(checklistIndex, 1)
+        })
+        .addCase(addChecklistItem.fulfilled, (state, action) => {
+          const cardID = action.meta.arg.cardID;
+          const checklistID = action.meta.arg.checklistID;
+          const checklistItem = action.payload;
+          const checklists = state.cardsData[cardID].checklists!
+          const checklistIndex = checklists.findIndex(checklist => checklist.id === checklistID)!;
+          checklists[checklistIndex].items.push(checklistItem);
+        })
+        .addCase(updateChecklistItem.fulfilled, (state, action) => {
+          const cardID = action.meta.arg.cardID;
+          const checklistID = action.meta.arg.checklistID;
+          const checklistItemID = action.meta.arg.checklistItemID;
+          const checklist = state.cardsData[cardID].checklists!.find(checklist => checklist.id === checklistID)!;
+          const checklistItem = checklist.items.find(checklist => checklist.id === checklistItemID)!;
+          checklistItem.isChecked = action.meta.arg.payload.isChecked;
+        })
+        .addCase(removeChecklistItem.fulfilled, (state, action) => {
+          const cardID = action.meta.arg.cardID;
+          const checklistID = action.meta.arg.checklistID;
+          const checklistItemID = action.meta.arg.checklistItemID;
+          const checklists = state.cardsData[cardID].checklists!
+          const checklistIndex = checklists.findIndex(checklist => checklist.id === checklistID)!;
+          const itemIndex = checklists[checklistIndex].items.findIndex(item => item.id === checklistItemID);
+          checklists[checklistIndex].items.splice(itemIndex, 1);
         })
     }
   }
@@ -392,6 +494,74 @@ export const getMemberList = createAsyncThunk(
   'getMemberList',
   async (boardID: number) => {
     return memberRequests.destroy(boardID).then(response => response.data);
+  }
+)
+
+export const getLabelOptions = createAsyncThunk(
+  'getLabelOptions',
+  async () => {
+    return labelRequests.get().then(response => response.data);
+  }
+)
+
+export const addLabel = createAsyncThunk(
+  'addLabel',
+  async (payload: AddLabelRequest) => {
+    return labelRequests.add(payload).then(response => response.data);
+  }
+)
+
+export const removeLabel = createAsyncThunk(
+  'removeLabel',
+  async (args: { labelID: number, cardID: number }) => {
+    return labelRequests.destroy(args.labelID).then(response => response.data);
+  }
+)
+
+export const addComment = createAsyncThunk(
+  'addComment',
+  async (args: { username: string, payload: CommentRequest }) => {
+    return commentRequests.create(args.payload).then(response => response.data);
+  }
+)
+
+export const createChecklist = createAsyncThunk(
+  'createChecklist',
+  async (args: { cardId: number, title: string }) => {
+    return checklistRequests.create(args).then(response => response.data);
+  }
+)
+
+export const editChecklist = createAsyncThunk(
+  'editChecklist',
+  async (args: { cardID: number, checklistID: number, title: string }) => {
+    return checklistRequests.update(args.checklistID, { title: args.title }).then(response => response.data);
+  }
+)
+
+export const deleteChecklist = createAsyncThunk(
+  'deleteChecklist',
+  async (args: { cardID: number, checklistID: number }) => {
+    return checklistRequests.destroy(args.checklistID).then(response => response.data);
+  }
+)
+
+export const addChecklistItem = createAsyncThunk(
+  'addChecklistItem',
+  async (args: { cardID: number, checklistID: number, payload: CreateChecklistItemRequest }) => {
+    return checklistItemRequests.create(args.payload).then(response => response.data);
+  }
+)
+export const updateChecklistItem = createAsyncThunk(
+  'updateChecklistItem',
+  async (args: { cardID: number, checklistID: number, checklistItemID: number, payload: UpdateChecklistItemRequest }) => {
+    return checklistItemRequests.update(args.checklistItemID, args.payload).then(response => response.data);
+  }
+)
+export const removeChecklistItem = createAsyncThunk(
+  'removeChecklistItem',
+  async (args: { cardID: number, checklistID: number, checklistItemID: number }) => {
+    return checklistItemRequests.destroy(args.checklistItemID).then(response => response.data);
   }
 )
 
