@@ -7,17 +7,6 @@ export type CommentResponse = {
   createdAt: string
 }
 
-export type CommentRequest = {
-  cardId: number
-  message: string
-}
-
-export type Comment = {
-  id: number
-  message: string
-  authorname: string
-}
-
 export type NestedCommentResponse = {
   id: number
   message: string
@@ -31,4 +20,9 @@ export type NestedCommentResponse = {
     createdAt: string
     updatedAt: string
   }
+}
+
+export type CommentRequest = {
+  cardId: number
+  message: string
 }

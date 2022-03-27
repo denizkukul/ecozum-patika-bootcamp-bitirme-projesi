@@ -1,4 +1,4 @@
-import { ChecklistItemResponse } from "../checklistitem"
+import { ChecklistItemResponse } from '../checklistitem'
 export type ChecklistResponse = {
   id: number
   cardId: number

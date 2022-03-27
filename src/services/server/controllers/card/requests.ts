@@ -1,22 +1,22 @@
 import { server, endpoints } from '../../server';
 import { CardResponse, NestedCardResponse, CreateCardRequest, UpdateCardRequest } from './types';
 
-export const create = (payload: CreateCardRequest) => {
-  return server.post<CardResponse>(endpoints.card, payload);
+export const create = (data: CreateCardRequest) => {
+  return server.post<CardResponse>(endpoints.card, data);
 }
 
-export const update = (id: number, payload: UpdateCardRequest) => {
-  return server.put<CardResponse>(`${endpoints.card}/${id}`, payload);
+export const update = (cardID: number, data: UpdateCardRequest) => {
+  return server.put<CardResponse>(`${endpoints.card}/${cardID}`, data);
 }
 
-export const destroy = (id: number) => {
-  return server.delete(`${endpoints.card}/${id}`);
+export const destroy = (cardID: number) => {
+  return server.delete(`${endpoints.card}/${cardID}`);
 }
 
-export const getById = (id: number) => {
-  return server.get<NestedCardResponse>(`${endpoints.card}/${id}`);
+export const get = (cardID: number) => {
+  return server.get<NestedCardResponse>(`${endpoints.card}/${cardID}`);
 }
 
-export const getList = () => {
-  return server.get<NestedCardResponse[]>(endpoints.card);
+export const getList = (listID: number) => {
+  return server.get<NestedCardResponse[]>(`${endpoints.list}?listId=${listID}`);
 }

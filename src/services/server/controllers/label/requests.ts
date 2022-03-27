@@ -1,14 +1,14 @@
 import { server, endpoints } from '../../server';
-import { AddLabelRequest, LabelResponse, LabelOptionResponse } from './types';
+import { AddLabelRequest, LabelResponse, LabelTypeResponse } from './types';
 
-export const add = (payload: AddLabelRequest) => {
-  return server.post<LabelResponse>(endpoints.label, payload);
+export const create = (data: AddLabelRequest) => {
+  return server.post<LabelResponse>(endpoints.label, data);
 }
 
-export const destroy = (id: number) => {
-  return server.delete(`${endpoints.label}/${id}`);
+export const destroy = (labelID: number) => {
+  return server.delete(`${endpoints.label}/${labelID}`);
 }
 
-export const get = () => {
-  return server.get<LabelOptionResponse[]>(endpoints.labelOptions);
+export const getLabelTypes = () => {
+  return server.get<LabelTypeResponse[]>(endpoints.labelTypes);
 }

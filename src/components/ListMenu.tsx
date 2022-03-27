@@ -5,10 +5,10 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { Delete, Edit, Logout } from '@mui/icons-material';
 import { useState } from 'react';
-import { Box, Button, Icon, IconButton, Menu } from '@mui/material';
+import { Box, IconButton, Menu } from '@mui/material';
 import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { deleteList } from '../store/appdataSlice';
+import { deleteList } from '../store/lists/listActions';
 
 type ListMenuProps = {
   listID: number
@@ -26,7 +26,7 @@ export const ListMenu: React.FC<ListMenuProps> = ({ listID }) => {
   };
 
   const handleDeleteList = () => {
-    dispatch(deleteList({ id: listID }));
+    dispatch(deleteList({ listID }));
   }
 
   const handleEditList = () => {

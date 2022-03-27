@@ -8,31 +8,35 @@ import TextField from "@mui/material/TextField/TextField"
 import Typography from "@mui/material/Typography/Typography"
 import { useState } from "react"
 import { useAppDispatch } from "../hooks/useAppDispatch"
-import { Checklist as ChecklistData } from "../services/server/controllers/card/types"
-import { addChecklistItem, removeChecklistItem, updateChecklistItem } from "../store/appdataSlice"
+import { useAppSelector } from "../hooks/useAppSelector"
+import { Checklist as ChecklistProps } from "../store/checklists/checklistsReducer"
+import { createChecklistItem, deleteChecklist, deleteChecklistItem, updateChecklistItem } from "../store/checklists/checklistActions"
 
-type ChecklistProps = {
-  checklist: ChecklistData
-  cardID: number
-  handleDeleteChecklist: (checklistID: number) => void
+type Props = {
+  checklistID: number
 }
 
-export const Checklist: React.FC<ChecklistProps> = ({ checklist, handleDeleteChecklist, cardID }) => {
+export const Checklist: React.FC<Props> = ({ checklistID }) => {
+  const checklist = useAppSelector(state => state.app.checklists[checklistID]);
   const [newItem, setNewItem] = useState('');
   const dispatch = useAppDispatch();
 
   const handleCreateChecklistItem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(addChecklistItem({ cardID, checklistID: checklist.id, payload: { checklistId: checklist.id, title: newItem, isChecked: false } }));
+    dispatch(createChecklistItem({ data: { checklistId: checklist.id, title: newItem, isChecked: false } }));
     setNewItem('');
   }
 
-  const handleDeleteChecklistItem = (id: number) => {
-    dispatch(removeChecklistItem({ cardID, checklistID: checklist.id, checklistItemID: id }));
+  const handleDeleteChecklistItem = (checklistItemID: number) => {
+    dispatch(deleteChecklistItem({ checklistID: checklist.id, checklistItemID }));
   }
 
-  const handleUpdateListItem = (id: number, isChecked: boolean) => {
-    dispatch(updateChecklistItem({ cardID, checklistID: checklist.id, checklistItemID: id, payload: { isChecked } }))
+  const handleUpdateListItem = (checklistItemID: number, isChecked: boolean) => {
+    dispatch(updateChecklistItem({ checklistID: checklist.id, checklistItemID, data: { isChecked } }))
+  }
+
+  const handleDeleteChecklist = (checklistID: number) => {
+    dispatch(deleteChecklist({ checklistID }))
   }
 
   const getProgress = () => {
@@ -41,8 +45,6 @@ export const Checklist: React.FC<ChecklistProps> = ({ checklist, handleDeleteChe
     if (completed === 0) return 0
     else return (completed) / (checklist.items.length) * 100
   }
-
-  console.log(getProgress());
 
   return (
     <Box bgcolor='whitesmoke' borderRadius='10px' key={checklist.id} my={3}>

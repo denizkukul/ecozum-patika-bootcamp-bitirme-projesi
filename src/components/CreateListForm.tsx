@@ -4,12 +4,11 @@ import { useForm } from "../hooks/useForm"
 import { CreateListRequest } from "../services/server/controllers/list"
 
 type CreateListFormProps = {
-  boardID: number
-  onSubmit: (formValues: CreateListRequest) => void
+  onSubmit: (formValues: { title: string }) => void
 }
 
-export const CreateListForm: React.FC<CreateListFormProps> = ({ boardID, onSubmit }) => {
-  const { formValues, updateFormValues, clearFormValues } = useForm({ defaultValues: { title: '', boardId: boardID } });
+export const CreateListForm: React.FC<CreateListFormProps> = ({ onSubmit }) => {
+  const { formValues, updateFormValues, clearFormValues } = useForm({ defaultValues: { title: '' } });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

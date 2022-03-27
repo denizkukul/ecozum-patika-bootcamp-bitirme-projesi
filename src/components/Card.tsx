@@ -1,17 +1,18 @@
 import { Box, Button, Checkbox, Chip, IconButton, LinearProgress, Modal, TextField, Typography } from '@mui/material';
 import { Draggable } from 'react-beautiful-dnd';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { addComment, addLabel, Card as CardProps, createChecklist, deleteCard, deleteChecklist, removeLabel, updateCard } from '../store/appdataSlice';
+import { addComment, addLabel, deleteCard, removeLabel, updateCard } from '../store/cards/cardActions';
+import { Card as CardProps } from '../store/cards/cardsReducer';
 import VisibilityRoundedIcon from '@mui/icons-material/Visibility';
 import InsertCommentOutlinedIcon from '@mui/icons-material/InsertCommentOutlined';
 import { Delete, Remove } from '@mui/icons-material';
 import { useState } from 'react';
 import { AddLabelRequest } from '../services/server/controllers/label';
 import { useAppSelector } from '../hooks/useAppSelector';
-import { selectAuth } from '../store/authSlice';
 import LabelRoundedIcon from '@mui/icons-material/LabelRounded';
 import { AddLabelMenu } from './AddLabelMenu';
 import { Checklist } from './Checklist';
+import { createChecklist, deleteChecklist } from '../store/checklists/checklistActions';
 type Props = CardProps & {
   index: number
 }
@@ -20,7 +21,7 @@ export const Card: React.FC<Props> = ({ index, ...cardData }) => {
   const [modalActive, setModalActive] = useState(false);
   const dispatch = useAppDispatch();
   const handleDeleteCard = () => {
-    dispatch(deleteCard({ id: cardData.id }))
+    dispatch(deleteCard({ cardID: cardData.id || 0 }))
   }
 
   const showCardModal = () => {
@@ -44,7 +45,7 @@ export const Card: React.FC<Props> = ({ index, ...cardData }) => {
                 <Box>
                   {cardData.description && <Box p={2} ><Typography>{cardData.description}</Typography></Box>}
                   {cardData.duedate && <Box p={2} ><Typography>{cardData.duedate}</Typography></Box>}
-                  {cardData.duedate && <Box p={2} ><Typography>{cardData.checklists}</Typography></Box>}
+                  {cardData.duedate && <Box p={2} ><Typography>{cardData.checklistIDs}</Typography></Box>}
                   {cardData.duedate && <Box p={2} ><Typography>{cardData.labels}</Typography></Box>}
                   {cardData.duedate && <Box p={2} ><Typography>{cardData.comments}</Typography></Box>}
                 </Box>
@@ -72,20 +73,20 @@ type CardModalProps = CardProps & {
 
 export const CardModal: React.FC<CardModalProps> = ({ open, closeModal, ...cardData }) => {
   const dispatch = useAppDispatch();
-  const { id, comments, description, labels, title, duedate, checklists } = cardData;
+  const { id, comments, description, labels, title, duedate, checklistIDs } = cardData;
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
   const [newDuedate, setNewDuedate] = useState(duedate);
   const [newComment, setnewComment] = useState('');
   const [checklist, setChecklist] = useState('');
-  const auth = useAppSelector(selectAuth);
+  const auth = useAppSelector(state => state.auth);
 
   const handleEditCard = () => {
-    dispatch(updateCard({ id, updateData: { title: newTitle, description: newDescription } }));
+    dispatch(updateCard({ cardID: id, data: { title: newTitle, description: newDescription } }));
   }
 
-  const handleAddLabel = (payload: AddLabelRequest) => {
-    dispatch(addLabel(payload))
+  const handleAddLabel = (data: AddLabelRequest) => {
+    dispatch(addLabel({ data }))
   }
 
   const handleRemoveLabel = (labelID: number) => {
@@ -93,20 +94,20 @@ export const CardModal: React.FC<CardModalProps> = ({ open, closeModal, ...cardD
   }
 
   const handleSendComment = () => {
-    dispatch(addComment({ username: auth.value.username!, payload: { cardId: id, message: newComment } }))
+    dispatch(addComment({ username: auth.username!, data: { cardId: id, message: newComment } }))
   }
 
   const handleCreateChecklist = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    dispatch(createChecklist({ cardId: id, title: checklist }))
+    dispatch(createChecklist({ data: { cardId: id, title: checklist } }))
     setChecklist('');
   }
 
   const handleDeleteChecklist = (checklistID: number) => {
-    dispatch(deleteChecklist({ cardID: id, checklistID }))
+    dispatch(deleteChecklist({ checklistID }))
   }
 
-  const labelOptions = useAppSelector(state => state.appdata.labelOptions);
+  const labelOptions = useAppSelector(state => state.app.labelTypes);
 
   return (
     <Modal open={open} onClose={closeModal}>
@@ -149,7 +150,7 @@ export const CardModal: React.FC<CardModalProps> = ({ open, closeModal, ...cardD
           {
             labels?.map(label => {
               return (
-                <Chip key={label.id} label={labelOptions[label.labelID].title} sx={{ m: 1, ml: 0, fontWeight: '700', backgroundColor: labelOptions[label.labelID].color }} onDelete={() => handleRemoveLabel(label.id)} />
+                <Chip key={label.id} label={labelOptions[label.id].title} sx={{ m: 1, ml: 0, fontWeight: '700', backgroundColor: labelOptions[label.id].color }} onDelete={() => handleRemoveLabel(label.id)} />
               )
             })
           }
@@ -164,9 +165,9 @@ export const CardModal: React.FC<CardModalProps> = ({ open, closeModal, ...cardD
             </Box>
           </Box>
           {
-            checklists?.map(checklist => {
+            checklistIDs.map(checklistID => {
               return (
-                <Checklist key={checklist.id} cardID={id} checklist={checklist} handleDeleteChecklist={handleDeleteChecklist} />
+                <Checklist key={checklistID} checklistID={checklistID} />
               )
             })
           }
@@ -178,7 +179,7 @@ export const CardModal: React.FC<CardModalProps> = ({ open, closeModal, ...cardD
             {comments?.map(comment => {
               return (
                 <Box key={comment.id} p={1} borderRadius='10px' bgcolor='whitesmoke' my={2}>
-                  <Typography pb={1} borderBottom='1px solid gray'>Author: {comment.authorname}</Typography>
+                  <Typography pb={1} borderBottom='1px solid gray'>Author: {comment.author.username}</Typography>
                   <Typography pt={1}>{comment.message}</Typography>
                 </Box>
               )

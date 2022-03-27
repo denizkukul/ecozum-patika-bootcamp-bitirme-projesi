@@ -4,12 +4,11 @@ import { useForm } from "../hooks/useForm"
 import { CreateCardRequest } from "../services/server/controllers/card"
 
 type CreateCardFormProps = {
-  listID: number
-  onSubmit: (formValues: CreateCardRequest) => void
+  onSubmit: (formValues: { title: string }) => void
 }
 
-export const CreateCardForm: React.FC<CreateCardFormProps> = ({ listID, onSubmit }) => {
-  const { formValues, updateFormValues, clearFormValues } = useForm({ defaultValues: { title: '', description: '', listId: listID } });
+export const CreateCardForm: React.FC<CreateCardFormProps> = ({ onSubmit }) => {
+  const { formValues, updateFormValues, clearFormValues } = useForm({ defaultValues: { title: '' } });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

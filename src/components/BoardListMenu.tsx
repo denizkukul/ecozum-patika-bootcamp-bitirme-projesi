@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { Box, Button, Icon, IconButton, Menu } from '@mui/material';
 import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { logout } from '../store/authSlice';
+import { logout } from '../store/auth/authActions';
 
 export const BoardListMenu: React.FC = () => {
   const dispatch = useAppDispatch();

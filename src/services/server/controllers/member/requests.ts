@@ -1,12 +1,12 @@
 import { server, endpoints } from '../../server';
-import { MemberRequest, MemberResponse } from './types';
+import { MemberRequest, MemberResponse, MemberListResponse } from './types';
 
-export const add = (payload: MemberRequest) => {
-  return server.post<MemberResponse>(endpoints.member, payload);
+export const create = (data: MemberRequest) => {
+  return server.post<MemberResponse>(endpoints.member, data);
 }
 
 export const getList = (boardID: number) => {
-  return server.get<MemberResponse[]>(`${endpoints.member}/?boardId=${boardID}`);
+  return server.get<MemberListResponse[]>(`${endpoints.member}?boardId=${boardID}`);
 }
 
 export const destroy = (memberID: number) => {

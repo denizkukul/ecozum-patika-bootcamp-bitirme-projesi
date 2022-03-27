@@ -1,3 +1,3 @@
 export * as default from './requests';
 
-export type { CommentRequest, CommentResponse, Comment, NestedCommentResponse } from './types'
+export type { CommentRequest, CommentResponse, NestedCommentResponse } from './types'

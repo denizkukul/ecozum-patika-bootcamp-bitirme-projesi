@@ -1,3 +1,3 @@
-export * as default from "./requests"
+export * as default from './requests'
 
-export type { NestedMemberResponse, MemberResponse, MemberRequest } from "./types"
+export type { NestedMemberResponse, MemberResponse, MemberRequest, MemberListResponse } from './types'

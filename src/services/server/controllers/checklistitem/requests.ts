@@ -1,14 +1,14 @@
 import { server, endpoints } from '../../server';
 import { CreateChecklistItemRequest, UpdateChecklistItemRequest, ChecklistItemResponse } from './types';
 
-export const create = (payload: CreateChecklistItemRequest) => {
-  return server.post<ChecklistItemResponse>(endpoints.checklistItem, payload);
+export const create = (data: CreateChecklistItemRequest) => {
+  return server.post<ChecklistItemResponse>(endpoints.checklistItem, data);
 }
 
-export const update = (id: number, payload: UpdateChecklistItemRequest) => {
-  return server.put<ChecklistItemResponse>(`${endpoints.checklistItem}/${id}`, payload);
+export const update = (checklistItemID: number, data: UpdateChecklistItemRequest) => {
+  return server.put<ChecklistItemResponse>(`${endpoints.checklistItem}/${checklistItemID}`, data);
 }
 
-export const destroy = (id: number) => {
-  return server.delete(`${endpoints.checklistItem}/${id}`);
+export const destroy = (checklistItemID: number) => {
+  return server.delete(`${endpoints.checklistItem}/${checklistItemID}`);
 }

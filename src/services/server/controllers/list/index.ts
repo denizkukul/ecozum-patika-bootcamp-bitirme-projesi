@@ -1,3 +1,3 @@
-export * as default from "./requests"
+export * as default from './requests'
 
-export type { CreateListRequest, UpdateListRequest, ListResponse, NestedListResponse } from "./types"
+export type { CreateListRequest, UpdateListRequest, ListResponse, NestedListResponse } from './types'

@@ -5,10 +5,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { Add, Delete, Edit, Label, Logout } from '@mui/icons-material';
 import { useState } from 'react';
 import { Box, Button, Chip, Icon, IconButton, Menu } from '@mui/material';
-import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { deleteList } from '../store/appdataSlice';
-import { AddLabelRequest, LabelOptionResponse } from '../services/server/controllers/label';
+import { AddLabelRequest, LabelTypeResponse } from '../services/server/controllers/label';
 import { useAppSelector } from '../hooks/useAppSelector';
 
 type AddLabelMenuProps = {
@@ -17,8 +15,9 @@ type AddLabelMenuProps = {
 }
 
 export const AddLabelMenu: React.FC<AddLabelMenuProps> = ({ cardID, handleAddLabel }) => {
-  const labelOptions = useAppSelector(state => state.appdata.labelOptions);
-  const currentLabels = useAppSelector(state => state.appdata.cardsData[cardID].labels);
+  const card = useAppSelector(state => state.app.cards[cardID]);
+  const labelTypes = useAppSelector(state => state.app.labelTypes);
+  const currentLabels = card.labels;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,14 +49,14 @@ export const AddLabelMenu: React.FC<AddLabelMenuProps> = ({ cardID, handleAddLab
       >
         <MenuList>
           {
-            Object.keys(labelOptions).map(id => {
-              if (currentLabels?.every(label => label.labelID !== Number(id))) {
+            Object.keys(labelTypes).map(id => {
+              if (currentLabels?.every(label => label.id !== Number(id))) {
                 return (
                   <MenuItem key={id} onClick={() => handleSelect({ cardId: cardID, labelId: Number(id) })} >
                     <ListItemIcon>
-                      <Label sx={{ color: labelOptions[Number(id)].color }} fontSize="small" />
+                      <Label sx={{ color: labelTypes[Number(id)].color }} fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText>{labelOptions[Number(id)].title}</ListItemText>
+                    <ListItemText>{labelTypes[Number(id)].title}</ListItemText>
                   </MenuItem>
                 )
               }

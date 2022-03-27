@@ -1,22 +1,22 @@
 import { server, endpoints } from '../../server';
-import { BoardResponse, BoardRequest, NestedBoardResponse } from './types';
+import { BoardResponse, BoardRequest, NestedBoardResponse, BoardListResponse } from './types';
 
-export const create = (payload: BoardRequest) => {
-  return server.post<BoardResponse>(endpoints.board, payload);
+export const create = (data: BoardRequest) => {
+  return server.post<BoardResponse>(endpoints.board, data);
 }
 
-export const update = (id: number, payload: BoardRequest) => {
-  return server.put<BoardResponse>(`${endpoints.board}/${id}`, payload);
+export const update = (boardID: number, data: BoardRequest) => {
+  return server.put<BoardResponse>(`${endpoints.board}/${boardID}`, data);
 }
 
-export const destroy = (id: number) => {
-  return server.delete(`${endpoints.board}/${id}`);
+export const destroy = (boardID: number) => {
+  return server.delete(`${endpoints.board}/${boardID}`);
 }
 
-export const getById = (id: number) => {
-  return server.get<NestedBoardResponse>(`${endpoints.board}/${id}`);
+export const getById = (boardID: number) => {
+  return server.get<NestedBoardResponse>(`${endpoints.board}/${boardID}`);
 }
 
 export const getList = () => {
-  return server.get<BoardResponse[]>(endpoints.board);
+  return server.get<BoardListResponse[]>(endpoints.board);
 }

@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { BoardLink } from '../components/BoardLink'
 import { CreateBoardForm } from '../components/CreateBoardForm'
@@ -7,23 +7,22 @@ import { Loading } from '../components/Loading'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { BoardRequest } from '../services/server/controllers/board'
-import { createBoard, getBoardList, getLabelOptions, selectAppStatus, selectBoardIDs } from '../store/appdataSlice'
-import { logout } from '../store/authSlice'
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import { createBoard, getBoardList } from '../store/boards/boardActions'
+import { getLabelTypes } from '../store/app/miscActions'
 import { BoardListMenu } from '../components/BoardListMenu'
 
 export const BoardListPage = () => {
-  const appStatus = useAppSelector(selectAppStatus);
-  const boardIDs = useAppSelector(selectBoardIDs);
+  const boardIDs = useAppSelector(state => state.app.boardIDs);
+  const appStatus = useAppSelector(state => state.app.status);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getBoardList());
-    dispatch(getLabelOptions())
+    dispatch(getLabelTypes())
   }, [dispatch])
 
   const handleCreateBoard = (formData: BoardRequest) => {
-    dispatch(createBoard(formData));
+    dispatch(createBoard({ data: formData }));
   }
 
   return (

@@ -7,8 +7,8 @@ import { useState } from 'react';
 import { Box, Divider, IconButton, List, ListItem, ListItemButton, Menu, Typography } from '@mui/material';
 import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { addMember, deleteBoard, removeMember, selectBoardsData } from '../store/appdataSlice';
-import { logout } from '../store/authSlice';
+import { addMember, deleteBoard, removeMember } from '../store/boards/boardActions';
+import { logout } from '../store/auth/authActions';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { MemberRequest } from '../services/server/controllers/member';
 import { useAppSelector } from '../hooks/useAppSelector';
@@ -41,15 +41,14 @@ type MemberListProps = {
 
 export const MemberList: React.FC<MemberListProps> = ({ boardID, close }) => {
   const dispatch = useAppDispatch();
-  const boards = useAppSelector(selectBoardsData);
-  const board = boards[boardID];
+  const board = useAppSelector(state => state.app.boards[boardID]);
 
   const handleRemoveMember = (id: number) => {
     dispatch(removeMember({ memberID: id, boardID: boardID }))
   }
 
   const handleAddMember = (formValues: MemberRequest) => {
-    dispatch(addMember(formValues))
+    dispatch(addMember({ data: formValues }))
   }
 
   return (
@@ -62,7 +61,7 @@ export const MemberList: React.FC<MemberListProps> = ({ boardID, close }) => {
       <List>
         {
           board.members.map(member => {
-            return <MemberListItem key={member.id} username={member.username} memberID={member.id} onClick={handleRemoveMember} />
+            return <MemberListItem key={member.id} username={member.username} memberID={member.BoardMember.id} onClick={handleRemoveMember} />
           })
         }
       </List>
@@ -93,7 +92,7 @@ export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID }) => {
   };
 
   const handleDeleteBoard = () => {
-    dispatch(deleteBoard({ id: boardID }));
+    dispatch(deleteBoard({ boardID }));
   }
 
   const handleLogout = () => {

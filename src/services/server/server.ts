@@ -13,7 +13,7 @@ export const endpoints = {
   label: '/card-label',
   checklist: '/checklist',
   checklistItem: '/checklist-item',
-  labelOptions: '/label'
+  labelTypes: '/label'
 }
 
 const token = getCookie('token') || sessionStorage.getItem('token');

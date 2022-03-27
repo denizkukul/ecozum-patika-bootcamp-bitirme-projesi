@@ -6,8 +6,6 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import './index.css';
 
-
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -21,3 +19,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+

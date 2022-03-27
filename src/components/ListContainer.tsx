@@ -1,7 +1,8 @@
 import { useAppDispatch } from "../hooks/useAppDispatch"
 import { useAppSelector } from "../hooks/useAppSelector"
 import { CreateListRequest } from "../services/server/controllers/list"
-import { changeCardOrder, changeCardParentList, changeListOrder, createList, selectListsData } from "../store/appdataSlice"
+import { createList } from "../store/lists/listActions";
+import { changeListOrder, changeCardOrder, moveCardToAnotherList } from "../store/app/miscActions"
 import { CreateListForm } from "./CreateListForm"
 import { List } from "./List"
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
@@ -13,11 +14,11 @@ type ListContainerProps = {
 }
 
 export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }) => {
-  const lists = useAppSelector(selectListsData);
+  const lists = useAppSelector(state => state.app.lists);
   const dispatch = useAppDispatch();
 
-  const handleCreateList = (formValues: CreateListRequest) => {
-    dispatch(createList(formValues))
+  const handleCreateList = (formValues: { title: string }) => {
+    dispatch(createList({ data: { title: formValues.title, boardId: boardID, order: listIDs.length } }))
   }
 
   const onDragEnd = (result: DropResult) => {
@@ -39,7 +40,8 @@ export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }
       newListIDs.splice(source.index, 1);
       newListIDs.splice(destination.index, 0, Number(draggableId.match(/[0-9]+$/)![0]));
 
-      dispatch(changeListOrder({ boardID, listIDs: newListIDs }))
+      // TODO: This can me made more efficient
+      dispatch(changeListOrder({ boardID, newListIDs }))
       return;
     }
     else { // Handle card drag-drop
@@ -52,7 +54,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }
         newCardIDs.splice(source.index, 1);
         newCardIDs.splice(destination.index, 0, Number(draggableId.match(/[0-9]+$/)![0]));
 
-        dispatch(changeCardOrder({ listID: sourceListID, cardIDs: newCardIDs }))
+        dispatch(changeCardOrder({ listID: sourceListID, newCardIDs }))
       }
       else { // Card dropped in another list
         const newSourceCardIDs = Array.from(lists[sourceListID].cardIDs)
@@ -61,7 +63,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }
         const cardID = newSourceCardIDs.splice(source.index, 1)[0];
         newTargetCardIDs.splice(destination.index, 0, cardID);
 
-        dispatch(changeCardParentList({ sourceListID, targetListID, sourceCardIDs: newSourceCardIDs, targetCardIDs: newTargetCardIDs }))
+        dispatch(moveCardToAnotherList({ source: { listID: sourceListID, newCardIDs: newSourceCardIDs }, target: { listID: targetListID, newCardIDs: newTargetCardIDs } }))
       }
 
       return;
@@ -79,7 +81,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }
               })
             }
             {provided.placeholder}
-            <CreateListForm boardID={boardID} onSubmit={handleCreateList} />
+            <CreateListForm onSubmit={handleCreateList} />
           </Box>
         )}
       </Droppable>

@@ -9,6 +9,10 @@ export type BoardResponse = {
   createdAt: string
 }
 
+export type BoardListResponse = BoardResponse & {
+  members: NestedMemberResponse[]
+}
+
 export type BoardOwner = {
   id: number
   username: string
@@ -22,4 +26,7 @@ export type NestedBoardResponse = BoardResponse & {
   members: NestedMemberResponse[]
 }
 
-export type BoardRequest = Pick<Board, 'title'>
+export type BoardRequest = {
+  title: string
+  member?: number[]
+}

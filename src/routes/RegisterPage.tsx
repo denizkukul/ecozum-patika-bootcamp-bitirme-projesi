@@ -6,17 +6,17 @@ import { RegisterForm } from '../components/RegisterForm';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { RegisterRequest } from '../services/server/controllers/auth/types';
-import { register, selectAuth } from '../store/authSlice';
+import { register } from '../store/auth/authActions';
 
 export const RegisterPage = () => {
   const dispatch = useAppDispatch();
-  const auth = useAppSelector(selectAuth);
+  const authStatus = useAppSelector(state => state.auth.status);
   const handleRegister = (formValues: RegisterRequest) => {
-    dispatch(register(formValues));
+    dispatch(register({ data: formValues }));
   }
 
   return (
-    auth.status === 'idle' ?
+    authStatus === 'idle' ?
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', overflow: 'auto' }}>
         <Header>
           <Typography color='primary' sx={{ fontFamily: 'Poppins', fontSize: '30px', fontWeight: '700', textAlign: 'center', flex: 1 }}>Scrumboard App</Typography>
