@@ -5,26 +5,43 @@ import { BoardListPage } from './routes/BoardListPage';
 import { BoardContentPage } from './routes/BoardContentPage';
 import { RequireAuth } from './components/RequireAuth';
 import { LoginPage } from './routes/LoginPage';
-import Box from '@mui/material/Box/Box';
+import { CssBaseline } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { blueGrey, indigo, teal } from '@mui/material/colors';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      dark: blueGrey[800],
+      main: blueGrey[500],
+      light: blueGrey[200],
+    },
+    secondary: {
+      main: blueGrey[50],
+    }
+  },
+});
 
 const App: React.FC = () => {
   const auth = useAppSelector(state => state.auth);
 
   return (
-    <Box minHeight={'100vh'} display='flex' flexDirection='column'>
-      <BrowserRouter>
-        <Routes>
-          <Route path='*' element={<Navigate to={auth.userID ? `user${auth.userID}` : 'login'} />} />
-          <Route path='login' element={auth.userID ? <Navigate to={`user${auth.userID}`} /> : <LoginPage />} />
-          <Route path='register' element={auth.userID ? <Navigate to={`user${auth.userID}`} /> : <RegisterPage />} />
-          <Route path='user:userID' element={<RequireAuth />}>
-            <Route index element={<BoardListPage />} />
-            <Route path='board:boardID' element={<BoardContentPage />} />
-            <Route path='*' element={<Navigate to='' />} />
-          </Route>
-        </Routes>
-      </BrowserRouter >
-    </Box>
+    <CssBaseline>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='*' element={<Navigate to={auth.userID ? `user${auth.userID}` : 'login'} />} />
+            <Route path='login' element={auth.userID ? <Navigate to={`user${auth.userID}`} /> : <LoginPage />} />
+            <Route path='register' element={auth.userID ? <Navigate to={`user${auth.userID}`} /> : <RegisterPage />} />
+            <Route path='user:userID' element={<RequireAuth />}>
+              <Route index element={<BoardListPage />} />
+              <Route path='board:boardID' element={<BoardContentPage />} />
+              <Route path='*' element={<Navigate to='' />} />
+            </Route>
+          </Routes>
+        </BrowserRouter >
+      </ThemeProvider>
+    </CssBaseline>
   );
 }
 

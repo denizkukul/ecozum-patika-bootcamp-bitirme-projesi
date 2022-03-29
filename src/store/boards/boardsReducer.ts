@@ -35,7 +35,7 @@ export type Board = {
 const initialAppState: AppState = {
   status: 'idle',
   boardIDs: [],
-  labelTypes: {},
+  labelTypes: [],
   boards: {},
   lists: {},
   cards: {},
@@ -50,6 +50,7 @@ export const boardsReducer = createReducer(
         const boardID = action.payload.id;
         const board = action.payload;
         state.boards[boardID] = { ...board, listIDs: [], members: [] };
+        state.boardIDs.push(action.payload.id);
       })
       .addCase(updateBoard.fulfilled, (state, action) => {
         const boardID = action.meta.arg.boardID;
@@ -108,7 +109,7 @@ export const boardsReducer = createReducer(
         const boardID = action.meta.arg.boardID;
         const memberID = action.meta.arg.memberID;
         const memberIndex = state.boards[boardID].members.findIndex(member => member.BoardMember.id === memberID);
-        memberIndex && state.boards[boardID].members.splice(memberIndex, 1);
+        state.boards[boardID].members.splice(memberIndex, 1);
       })
   }
 );

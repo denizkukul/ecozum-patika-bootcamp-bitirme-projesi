@@ -21,6 +21,9 @@ export const authReducer = createReducer(
   initialAuthState,
   (builder) => {
     builder
+      .addCase(login.pending, (state) => {
+        state.status = 'loading';
+      })
       .addCase(login.fulfilled, (state, action) => {
         saveUserData({ user: action.payload, authPersistence: action.meta.arg.authPersistence });
         state.userID = action.payload.id;
@@ -38,7 +41,6 @@ export const authReducer = createReducer(
       .addCase(logout, (state) => {
         auth.logout();
         clearUserData();
-        // TODO: on logout clear all states and remove token
         state.userID = null;
         state.username = null;
       })

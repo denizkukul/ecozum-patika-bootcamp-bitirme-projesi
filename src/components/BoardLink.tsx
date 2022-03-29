@@ -11,7 +11,7 @@ type BoardLinkProps = {
 export const BoardLink: React.FC<BoardLinkProps> = ({ boardID }) => {
   const board = useAppSelector(state => state.app.boards[boardID])
   return (
-    <Box sx={{ height: '200px', width: '200px', m: 4, mt: 0, bgcolor: 'whitesmoke', borderRadius: '20px', ':hover': { backgroundColor: 'lightgray' } }}>
+    <Box sx={{ height: '200px', width: '200px', m: 4, mt: 0, bgcolor: 'white', borderRadius: '20px', ':hover': { backgroundColor: 'grey.200' } }}>
       <Link to={`board${boardID}`} style={{ display: 'block', height: '100%', width: '100%' }} >
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           <Box sx={{ width: '100%', flex: 45, display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>

@@ -1,11 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { logout } from "../auth/authActions";
 import { AppState } from "./appReducer";
-import { changeCardOrder, changeListOrder, moveCardToAnotherList } from "./miscActions";
+import { changeCardOrder, changeListOrder, getLabelTypes, moveCardToAnotherList } from "./miscActions";
 
 const initialAppState: AppState = {
   status: 'idle',
   boardIDs: [],
-  labelTypes: {},
+  labelTypes: [],
   boards: {},
   lists: {},
   cards: {},
@@ -45,6 +46,11 @@ export const miscReducer = createReducer(
           state.cards[cardID].listId = target.listID;
         })
       })
-
+      .addCase(getLabelTypes.fulfilled, (state, action) => {
+        state.labelTypes = action.payload;
+      })
+      .addCase(logout, () => {
+        return initialAppState;
+      })
   })
 

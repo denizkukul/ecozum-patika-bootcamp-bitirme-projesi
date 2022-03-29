@@ -12,9 +12,10 @@ import { deleteList } from '../store/lists/listActions';
 
 type ListMenuProps = {
   listID: number
+  startEdit: () => void;
 }
 
-export const ListMenu: React.FC<ListMenuProps> = ({ listID }) => {
+export const ListMenu: React.FC<ListMenuProps> = ({ listID, startEdit }) => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -40,8 +41,9 @@ export const ListMenu: React.FC<ListMenuProps> = ({ listID }) => {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
+        color='secondary'
       >
-        <MoreVertRounded />
+        <MoreVertRounded sx={{ color: 'white' }} />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
@@ -52,7 +54,7 @@ export const ListMenu: React.FC<ListMenuProps> = ({ listID }) => {
         }}
       >
         <MenuList>
-          <MenuItem onClick={handleEditList}>
+          <MenuItem onClick={startEdit}>
             <ListItemIcon>
               <Edit fontSize="small" />
             </ListItemIcon>

@@ -33,7 +33,7 @@ export const BoardListMenu: React.FC = () => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <MoreVertRounded />
+        <MoreVertRounded sx={{ color: 'primary.contrastText' }} />
       </IconButton>
       <Menu
         anchorEl={anchorEl}

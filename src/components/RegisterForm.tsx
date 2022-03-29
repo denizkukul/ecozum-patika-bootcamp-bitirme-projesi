@@ -18,7 +18,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, children }
   }
 
   return (
-    <Box component='form' sx={{ bgcolor: 'whitesmoke', p: 2, width: '650px', height: '100%', borderRadius: '10px', boxSizing: 'border-box' }} onSubmit={handleSubmit}>
+    <Box component='form' sx={{ bgcolor: 'secondary.main', p: 2, width: '650px', height: '100%', borderRadius: '5px', boxSizing: 'border-box' }} onSubmit={handleSubmit}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontWeight: '600', fontFamily: 'Poppins' }}>
         <Typography color='primary' sx={{ fontFamily: 'Poppins', fontSize: '25px', fontWeight: '600', textAlign: 'center', flex: 1, my: 2 }}>REGISTER</Typography>
         <TextField sx={{ bgcolor: 'white', width: '60%', mb: 2 }} name='username' type='text' placeholder="Username" value={formValues.username} onChange={updateFormValues} />

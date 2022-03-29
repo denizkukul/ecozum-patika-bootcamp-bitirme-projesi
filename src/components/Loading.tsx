@@ -1,5 +1,10 @@
-export const Loading = () => {
+import Box from "@mui/material/Box/Box"
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress"
+
+export const Loading: React.FC = () => {
   return (
-    <div style={{ fontSize: '40px' }}>Loading...</div>
+    <Box sx={{ display: 'flex', minWidth: '100%', minHeight: '100vh', justifyContent: 'center', alignItems: 'center' }}>
+      <CircularProgress />
+    </Box>
   )
 }

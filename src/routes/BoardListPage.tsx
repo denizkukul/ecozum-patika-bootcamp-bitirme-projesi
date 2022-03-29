@@ -27,14 +27,14 @@ export const BoardListPage = () => {
 
   return (
     appStatus === 'idle' ?
-      <Box style={{ flex: 1, display: 'flex', flexDirection: 'column', maxWidth: '100%' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', maxWidth: '100%', minHeight: '100vh' }}>
         <Header>
-          <Typography color="primary" sx={{ fontFamily: 'Poppins', fontSize: '25px', fontWeight: '700', textAlign: 'center', flex: 1 }}>Boards</Typography>
+          <Typography color="primary.contrastText" sx={{ fontFamily: 'Poppins', fontSize: '25px', fontWeight: '700', textAlign: 'center', flex: 1 }}>Boards</Typography>
           <Box position='absolute' right='20px' >
             <BoardListMenu />
           </Box>
         </Header>
-        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', px: 10, py: 6, flexWrap: 'wrap', overflow: 'auto' }}>
+        <Box bgcolor='primary.light' sx={{ flex: 1, display: 'flex', justifyContent: 'center', px: 10, py: 6, flexWrap: 'wrap', overflow: 'auto' }}>
           {
             boardIDs.map(boardID => {
               return (

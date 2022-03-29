@@ -15,7 +15,7 @@ export type List = {
 const initialAppState: AppState = {
   status: 'idle',
   boardIDs: [],
-  labelTypes: {},
+  labelTypes: [],
   boards: {},
   lists: {},
   cards: {},

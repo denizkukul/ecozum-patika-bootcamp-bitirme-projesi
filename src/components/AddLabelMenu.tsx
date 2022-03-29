@@ -2,21 +2,22 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { Add, Delete, Edit, Label, Logout } from '@mui/icons-material';
+import { Add, Delete, Edit, Label, LabelOutlined, Logout } from '@mui/icons-material';
 import { useState } from 'react';
-import { Box, Button, Chip, Icon, IconButton, Menu } from '@mui/material';
+import { Box, Button, Checkbox, Chip, Icon, IconButton, Menu } from '@mui/material';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { AddLabelRequest, LabelTypeResponse } from '../services/server/controllers/label';
 import { useAppSelector } from '../hooks/useAppSelector';
+import { addLabel, removeLabel } from '../store/cards/cardActions';
 
 type AddLabelMenuProps = {
   cardID: number
-  handleAddLabel: (payload: AddLabelRequest) => void
 }
 
-export const AddLabelMenu: React.FC<AddLabelMenuProps> = ({ cardID, handleAddLabel }) => {
+
+export const AddLabelMenu: React.FC<AddLabelMenuProps> = ({ cardID }) => {
   const card = useAppSelector(state => state.app.cards[cardID]);
   const labelTypes = useAppSelector(state => state.app.labelTypes);
+  const dispatch = useAppDispatch();
   const currentLabels = card.labels;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -27,20 +28,25 @@ export const AddLabelMenu: React.FC<AddLabelMenuProps> = ({ cardID, handleAddLab
     setAnchorEl(null);
   };
 
-  const handleSelect = (payload: AddLabelRequest) => {
-    handleClose();
-    handleAddLabel(payload);
+  const handleSelect = (arg: { labelId: number, cardLabelID?: number }) => {
+    if (arg.cardLabelID) {
+      dispatch(removeLabel({ cardLabelID: arg.cardLabelID, cardID }))
+    }
+    else {
+      dispatch(addLabel({ data: { cardId: cardID, labelId: arg.labelId } }))
+    }
   }
 
   return (
     <Box>
       <IconButton
-        aria-controls={open ? 'basic-menu' : undefined}
+        aria-controls={open ? 'menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
+        color='secondary'
       >
-        <Add />
+        <LabelOutlined sx={{ color: 'white' }} />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
@@ -49,17 +55,17 @@ export const AddLabelMenu: React.FC<AddLabelMenuProps> = ({ cardID, handleAddLab
       >
         <MenuList>
           {
-            Object.keys(labelTypes).map(id => {
-              if (currentLabels?.every(label => label.id !== Number(id))) {
-                return (
-                  <MenuItem key={id} onClick={() => handleSelect({ cardId: cardID, labelId: Number(id) })} >
-                    <ListItemIcon>
-                      <Label sx={{ color: labelTypes[Number(id)].color }} fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText>{labelTypes[Number(id)].title}</ListItemText>
-                  </MenuItem>
-                )
-              }
+            labelTypes.map((labelType, index) => {
+              const cardLabelID = currentLabels.find(label => label.id === labelType.id)?.CardLabel.id
+              return (
+                <MenuItem key={index} onClick={() => handleSelect({ labelId: labelType.id, cardLabelID })} >
+                  <Checkbox checked={Boolean(cardLabelID)} />
+                  <ListItemText>{labelType.title}</ListItemText>
+                  <ListItemIcon>
+                    <Label sx={{ color: labelType.color }} fontSize="small" />
+                  </ListItemIcon>
+                </MenuItem>
+              )
             })
           }
         </MenuList>

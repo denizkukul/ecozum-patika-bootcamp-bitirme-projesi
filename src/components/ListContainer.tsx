@@ -4,7 +4,7 @@ import { CreateListRequest } from "../services/server/controllers/list"
 import { createList } from "../store/lists/listActions";
 import { changeListOrder, changeCardOrder, moveCardToAnotherList } from "../store/app/miscActions"
 import { CreateListForm } from "./CreateListForm"
-import { List } from "./List"
+import { List } from "./List/List"
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { Box } from "@mui/material"
 
@@ -74,7 +74,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="board" direction="horizontal" type="list">
         {(provided, snapshot) => (
-          <Box sx={{ overflow: 'auto', p: 2, height: '100%', display: 'flex', flex: 1, borderRadius: '10px' }}{...provided.droppableProps} ref={provided.innerRef}>
+          <Box sx={{ overflow: 'auto', p: 2, pt: 3, height: '100%', display: 'flex', flex: 1, borderRadius: '10px' }}{...provided.droppableProps} ref={provided.innerRef}>
             {
               listIDs.map((listID, index) => {
                 return <List key={listID} index={index} {...lists[listID]} />

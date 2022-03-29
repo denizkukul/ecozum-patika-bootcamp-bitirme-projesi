@@ -5,8 +5,8 @@ export const create = (data: AddLabelRequest) => {
   return server.post<LabelResponse>(endpoints.label, data);
 }
 
-export const destroy = (labelID: number) => {
-  return server.delete(`${endpoints.label}/${labelID}`);
+export const destroy = (cardLabelID: number) => {
+  return server.delete(`${endpoints.label}/${cardLabelID}`);
 }
 
 export const getLabelTypes = () => {

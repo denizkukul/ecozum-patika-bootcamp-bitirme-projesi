@@ -42,8 +42,8 @@ export const addLabel = createAsyncThunk(
 
 export const removeLabel = createAsyncThunk(
   'cardActions/removeLabel',
-  async (arg: { labelID: number, cardID: number }) => {
-    return labelRequests.destroy(arg.labelID).then(response => response.data);
+  async (arg: { cardLabelID: number, cardID: number }) => {
+    return labelRequests.destroy(arg.cardLabelID).then(response => response.data);
   }
 )
 

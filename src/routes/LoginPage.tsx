@@ -19,11 +19,11 @@ export const LoginPage = () => {
 
   return (
     authStatus === 'idle' ?
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', overflow: 'auto' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', overflow: 'auto', minHeight: '100vh' }}>
         <Header>
-          <Typography color='primary' sx={{ fontFamily: 'Poppins', fontSize: '30px', fontWeight: '700', textAlign: 'center', flex: 1 }}>Scrumboard App</Typography>
+          <Typography color='primary.contrastText' sx={{ fontFamily: 'Poppins', fontSize: '30px', fontWeight: '700', textAlign: 'center', flex: 1 }}>Scrumboard App</Typography>
         </Header>
-        <Box sx={{ flex: 1, p: 4, width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <Box bgcolor='primary.light' sx={{ flex: 1, p: 4, width: '100%', display: 'flex', justifyContent: 'center' }}>
           <LoginForm onSubmit={handleLogin}>
             <Box display='flex' my={2}>
               <Typography mr={2}>Dont have an account ? </Typography>
