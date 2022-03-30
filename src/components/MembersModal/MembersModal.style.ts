@@ -17,3 +17,9 @@ export const ownerNameStyle = {
   borderBottom: '1px solid lightgray',
   py: 2,
 }
+
+export const closeButtonStyle = {
+  position: 'absolute',
+  right: 11,
+  top: 11
+}

@@ -2,15 +2,14 @@ import Box from '@mui/material/Box/Box';
 
 const style = {
   flex: '1 1 0',
-  position: 'relative',
   display: 'flex',
-  overflow: 'hidden',
+  justifyContent: 'center',
   flexDirection: 'column',
-  minHeight: '100vh',
-  maxWidth: '100%'
+  overflow: 'hidden',
+  bgcolor: 'primary.light'
 }
 
-export const AppContainer: React.FC = ({ children }) => {
+export const Content: React.FC = ({ children }) => {
   return (
     <Box sx={style}>
       {children}

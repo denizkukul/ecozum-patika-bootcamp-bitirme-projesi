@@ -1,12 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AppState } from '../app/appReducer';
-import { getBoard } from '../boards/boardActions';
-import { getCard } from '../cards/cardActions';
-import { getList } from '../lists/listActions';
 import { createChecklist, createChecklistItem, deleteChecklist, deleteChecklistItem, updateChecklist, updateChecklistItem } from './checklistActions';
 
 
-type ChecklistItem = {
+export type ChecklistItem = {
   id: number;
   checklistId: number;
   isChecked: boolean;

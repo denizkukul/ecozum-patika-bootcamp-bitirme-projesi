@@ -1,4 +1,3 @@
-import { Box } from '@mui/material'
 import { useEffect } from 'react'
 import { Header } from '../components/Layout/Header'
 import { Loading } from '../components/Loading'
@@ -8,6 +7,7 @@ import { getBoardList } from '../store/boards/boardActions'
 import { getLabelTypes } from '../store/app/miscActions'
 import { BoardList } from '../components/BoardList/BoardList'
 import { BoardListHeader } from '../components/BoardList/BoardListHeader'
+import { AppContainer } from '../components/Layout/AppContainer'
 
 export const BoardListPage = () => {
   const boardIDs = useAppSelector(state => state.app.boardIDs);
@@ -21,12 +21,12 @@ export const BoardListPage = () => {
 
   return (
     appStatus === 'idle' ?
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', maxWidth: '100%', minHeight: '100vh' }}>
+      <AppContainer>
         <Header>
           <BoardListHeader />
         </Header>
         <BoardList boardIDs={boardIDs} />
-      </Box> :
+      </AppContainer> :
       <Loading />
   )
 }

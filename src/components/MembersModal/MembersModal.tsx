@@ -12,7 +12,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { AddMemberForm } from '../Board/AddMemberForm';
 import { addMember, removeMember } from '../../store/boards/boardActions';
 import { MemberListItem } from './MemberListItem';
-import { modalTitleStyle, ownerNameStyle } from './MembersModal.style';
+import { closeButtonStyle, modalTitleStyle, ownerNameStyle } from './MembersModal.style';
 
 
 type MembersModalProps = {
@@ -40,7 +40,7 @@ export const MembersModal: React.FC<MembersModalProps> = ({ boardID, open, close
     >
       <DialogTitle sx={modalTitleStyle}>
         Board Members
-        <IconButton color='secondary' onClick={close} sx={{ position: 'absolute', right: 11, top: 11 }}>
+        <IconButton color='secondary' onClick={close} sx={closeButtonStyle}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>

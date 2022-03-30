@@ -9,7 +9,12 @@ const style = {
   width: '100%'
 }
 
-export const Title: React.FC = ({ children }) => {
+type TitleProps = {
+  main?: boolean
+}
+
+export const Title: React.FC<TitleProps> = ({ main, children }) => {
+  main && (style.fontSize = '28px');
   return (
     <Typography color='primary.contrastText' sx={style}>{children}</Typography>
   )

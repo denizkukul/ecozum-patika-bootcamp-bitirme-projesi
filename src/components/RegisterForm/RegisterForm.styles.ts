@@ -8,11 +8,12 @@ export const formStyle = {
   bgcolor: 'secondary.main',
   p: 2,
   width: '650px',
-  height: '100%',
+  height: 'fit-content',
   borderRadius: '5px',
-  boxSizing: 'border-box'
+  boxSizing: 'border-box',
+  minHeight: '400px',
+  mx: 'auto'
 }
-
 export const containerStyle = {
   display: 'flex',
   flexDirection: 'column',

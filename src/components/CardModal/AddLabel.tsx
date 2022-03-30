@@ -2,19 +2,19 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { Add, Delete, Edit, Label, LabelOutlined, Logout } from '@mui/icons-material';
+import { Label, LabelOutlined } from '@mui/icons-material';
 import { useState } from 'react';
-import { Box, Button, Checkbox, Chip, Icon, IconButton, Menu } from '@mui/material';
+import { Box, Checkbox, IconButton, Menu } from '@mui/material';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { addLabel, removeLabel } from '../../store/cards/cardActions';
 
-type AddLabelMenuProps = {
+type AddLabelProps = {
   cardID: number
 }
 
 
-export const AddLabelMenu: React.FC<AddLabelMenuProps> = ({ cardID }) => {
+export const AddLabel: React.FC<AddLabelProps> = ({ cardID }) => {
   const card = useAppSelector(state => state.app.cards[cardID]);
   const labelTypes = useAppSelector(state => state.app.labelTypes);
   const dispatch = useAppDispatch();
@@ -40,9 +40,6 @@ export const AddLabelMenu: React.FC<AddLabelMenuProps> = ({ cardID }) => {
   return (
     <Box>
       <IconButton
-        aria-controls={open ? 'menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         color='secondary'
       >

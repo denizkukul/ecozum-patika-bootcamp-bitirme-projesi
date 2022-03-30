@@ -8,6 +8,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import EventIcon from '@mui/icons-material/Event';
 import format from 'date-fns/format';
 import { updateCard } from '../../store/cards/cardActions';
+import { duedateFormContStyle, duedateFormStyle } from './CardModal.style';
 
 type SetDuedateProps = {
   cardID: number
@@ -29,42 +30,37 @@ export const SetDuedate: React.FC<SetDuedateProps> = ({ cardID }) => {
   const handleSetDuedate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!value) return
-    dispatch(updateCard({ cardID, data: { duedate: format(value, "yyyy-MM-dd") } }))
+    dispatch(updateCard({ cardID, data: { duedate: format(value, 'yyyy-MM-dd') } }))
     handleClose();
   }
 
   return (
     <Box>
       <IconButton
-        aria-controls={open ? 'set-duedate' : undefined}
-        aria-describedby={open ? "set-duedate" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         color='secondary'
       >
         <EventIcon />
       </IconButton>
       <Popover
-        id={open ? "set-duedate" : undefined}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center"
+          vertical: 'bottom',
+          horizontal: 'center'
         }}
         transformOrigin={{
-          vertical: "top",
-          horizontal: "center"
+          vertical: 'top',
+          horizontal: 'center'
         }}
         sx={{ mt: 1 }}
       >
-        <Box component='form' onSubmit={handleSetDuedate} sx={{ height: 'fit-content', width: '300px', p: 1, backgroundColor: 'white', borderRadius: '10px' }}>
-          <Box sx={{ width: '100%', flex: 1, display: 'flex', justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'column', pt: 3 }}>
+        <Box component='form' onSubmit={handleSetDuedate} sx={duedateFormStyle}>
+          <Box sx={duedateFormContStyle}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                label="Duedate"
+                label='Duedate'
                 value={value}
                 onChange={(newValue) => {
                   setValue(newValue);

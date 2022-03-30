@@ -1,21 +1,17 @@
-import MenuList from '@mui/material/MenuList';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import { Add, CheckBoxOutlined, Delete, Edit, Label, LabelOutlined, Logout } from '@mui/icons-material';
+import { CheckBoxOutlined } from '@mui/icons-material';
 import { useState } from 'react';
-import { Box, Button, Checkbox, Chip, Icon, IconButton, Menu, Popover, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, Popover, TextField } from '@mui/material';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { addLabel, removeLabel } from '../../store/cards/cardActions';
 import { useForm } from '../../hooks/useForm';
 import { createChecklist } from '../../store/checklists/checklistActions';
+import { cListFormContStyle, cListFormInnerContStyle, cListFormStyle } from './CardModal.style';
 
-type CreateChecklistMenuProps = {
+type CreateChecklistProps = {
   cardID: number
 }
 
-export const CreateChecklistMenu: React.FC<CreateChecklistMenuProps> = ({ cardID }) => {
+export const CreateChecklist: React.FC<CreateChecklistProps> = ({ cardID }) => {
   const card = useAppSelector(state => state.app.cards[cardID]);
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -63,10 +59,17 @@ export const CreateChecklistMenu: React.FC<CreateChecklistMenuProps> = ({ cardID
         }}
         sx={{ mt: 1 }}
       >
-        <Box component='form' onSubmit={handleAddChecklist} sx={{ height: 'fit-content', width: '300px', p: 1, backgroundColor: 'white', borderRadius: '10px' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <Box sx={{ width: '100%', flex: 75, display: 'flex', justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'column' }}>
-              <TextField autoFocus sx={{ width: '80%', my: 2 }} name='checklistTitle' placeholder='Checklist Title' value={formValues.checklistTitle} onChange={updateFormValues} />
+        <Box component='form' onSubmit={handleAddChecklist} sx={cListFormStyle}>
+          <Box sx={cListFormContStyle}>
+            <Box sx={cListFormInnerContStyle}>
+              <TextField
+                autoFocus
+                sx={{ width: '80%', my: 2 }}
+                name='checklistTitle'
+                placeholder='Checklist Title'
+                value={formValues.checklistTitle}
+                onChange={updateFormValues}
+              />
               <Button type='submit' sx={{ mb: 2 }} >Create Checklist</Button>
             </Box>
           </Box>
