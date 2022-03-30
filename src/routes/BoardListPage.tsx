@@ -1,15 +1,13 @@
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import { useEffect } from 'react'
-import { BoardLink } from '../components/BoardLink'
-import { CreateBoardForm } from '../components/CreateBoardForm'
-import { Header } from '../components/Header'
+import { Header } from '../components/Layout/Header'
 import { Loading } from '../components/Loading'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { useAppSelector } from '../hooks/useAppSelector'
-import { BoardRequest } from '../services/server/controllers/board'
-import { createBoard, getBoardList } from '../store/boards/boardActions'
+import { getBoardList } from '../store/boards/boardActions'
 import { getLabelTypes } from '../store/app/miscActions'
-import { BoardListMenu } from '../components/BoardListMenu'
+import { BoardList } from '../components/BoardList/BoardList'
+import { BoardListHeader } from '../components/BoardList/BoardListHeader'
 
 export const BoardListPage = () => {
   const boardIDs = useAppSelector(state => state.app.boardIDs);
@@ -21,29 +19,13 @@ export const BoardListPage = () => {
     dispatch(getLabelTypes())
   }, [dispatch])
 
-  const handleCreateBoard = (formData: BoardRequest) => {
-    dispatch(createBoard({ data: formData }));
-  }
-
   return (
     appStatus === 'idle' ?
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', maxWidth: '100%', minHeight: '100vh' }}>
         <Header>
-          <Typography color="primary.contrastText" sx={{ fontFamily: 'Poppins', fontSize: '25px', fontWeight: '700', textAlign: 'center', flex: 1 }}>Boards</Typography>
-          <Box position='absolute' right='20px' >
-            <BoardListMenu />
-          </Box>
+          <BoardListHeader />
         </Header>
-        <Box bgcolor='primary.light' sx={{ flex: 1, display: 'flex', justifyContent: 'center', px: 10, py: 6, flexWrap: 'wrap', overflow: 'auto' }}>
-          {
-            boardIDs.map(boardID => {
-              return (
-                <BoardLink key={boardID} boardID={boardID} />
-              )
-            })
-          }
-          <CreateBoardForm onSubmit={handleCreateBoard} />
-        </Box>
+        <BoardList boardIDs={boardIDs} />
       </Box> :
       <Loading />
   )

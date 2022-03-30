@@ -1,3 +1,3 @@
-export * as default from "./requests"
+export * as default from './requests'
 
-export type { User, LoginRequest, RegisterRequest } from "./types"
+export type { User, LoginRequest, RegisterRequest } from './types'

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Box, Button, IconButton, Popover, TextField } from '@mui/material';
-import { useAppDispatch } from '../hooks/useAppDispatch';
-import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import EventIcon from '@mui/icons-material/Event';
 import format from 'date-fns/format';
-import { updateCard } from '../store/cards/cardActions';
+import { updateCard } from '../../store/cards/cardActions';
 
 type SetDuedateProps = {
   cardID: number

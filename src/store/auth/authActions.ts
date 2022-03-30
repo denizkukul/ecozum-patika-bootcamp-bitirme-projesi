@@ -1,5 +1,5 @@
-import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import auth, { LoginRequest, RegisterRequest } from "../../services/server/controllers/auth";
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import auth, { LoginRequest, RegisterRequest } from '../../services/server/controllers/auth';
 
 export const login = createAsyncThunk(
   'login',

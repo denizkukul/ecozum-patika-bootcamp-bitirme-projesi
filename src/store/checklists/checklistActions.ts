@@ -1,6 +1,6 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import checklistRequests, { CreateChecklistRequest, UpdateChecklistRequest } from "../../services/server/controllers/checklist";
-import checklistItemRequests, { CreateChecklistItemRequest, UpdateChecklistItemRequest } from "../../services/server/controllers/checklistitem";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import checklistRequests, { CreateChecklistRequest, UpdateChecklistRequest } from '../../services/server/controllers/checklist';
+import checklistItemRequests, { CreateChecklistItemRequest, UpdateChecklistItemRequest } from '../../services/server/controllers/checklistitem';
 
 export const createChecklist = createAsyncThunk(
   'checklistActions/createChecklist',

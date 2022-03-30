@@ -5,11 +5,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { Add, CheckBoxOutlined, Delete, Edit, Label, LabelOutlined, Logout } from '@mui/icons-material';
 import { useState } from 'react';
 import { Box, Button, Checkbox, Chip, Icon, IconButton, Menu, Popover, TextField, Typography } from '@mui/material';
-import { useAppDispatch } from '../hooks/useAppDispatch';
-import { useAppSelector } from '../hooks/useAppSelector';
-import { addLabel, removeLabel } from '../store/cards/cardActions';
-import { useForm } from '../hooks/useForm';
-import { createChecklist } from '../store/checklists/checklistActions';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { addLabel, removeLabel } from '../../store/cards/cardActions';
+import { useForm } from '../../hooks/useForm';
+import { createChecklist } from '../../store/checklists/checklistActions';
 
 type CreateChecklistMenuProps = {
   cardID: number
@@ -27,7 +27,7 @@ export const CreateChecklistMenu: React.FC<CreateChecklistMenuProps> = ({ cardID
     setAnchorEl(null);
   };
 
-  const { formValues, updateFormValues, clearFormValues } = useForm({ defaultValues: { checklistTitle: '' } });
+  const { formValues, updateFormValues, clearFormValues } = useForm({ checklistTitle: '' });
 
   const handleAddChecklist = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

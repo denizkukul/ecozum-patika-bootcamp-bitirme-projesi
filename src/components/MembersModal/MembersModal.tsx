@@ -5,46 +5,23 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import ListItem from '@mui/material/ListItem/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon/ListItemIcon';
-import { CancelOutlined, Close } from '@mui/icons-material';
-import ListItemButton from '@mui/material/ListItemButton/ListItemButton';
-import ListItemText from '@mui/material/ListItemText/ListItemText';
 import Box from '@mui/material/Box/Box';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { MemberRequest } from '../../services/server/controllers/member';
-import Divider from '@mui/material/Divider/Divider';
-import List from '@mui/material/List/List';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { AddMemberForm } from '../AddMemberForm';
+import { AddMemberForm } from '../Board/AddMemberForm';
 import { addMember, removeMember } from '../../store/boards/boardActions';
-
-
-type MemberListItemProps = {
-  username: string
-  memberID: number
-  removeMember: (id: number) => void
-}
-
-export const MemberListItem: React.FC<MemberListItemProps> = ({ username, memberID, removeMember }) => {
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', borderBottom: '1px solid lightgray' }}  >
-      <Typography>{username}</Typography>
-      <IconButton onClick={() => removeMember(memberID)}>
-        <CancelOutlined />
-      </IconButton>
-    </Box >
-  )
-}
+import { MemberListItem } from './MemberListItem';
+import { modalTitleStyle, ownerNameStyle } from './MembersModal.style';
 
 
 type MembersModalProps = {
-  status: boolean
+  open: boolean
   boardID: number
   close: () => void
 }
 
-export const MembersModal: React.FC<MembersModalProps> = ({ status, boardID, close }) => {
+export const MembersModal: React.FC<MembersModalProps> = ({ boardID, open, close }) => {
   const board = useAppSelector(state => state.app.boards[boardID]);
   const dispatch = useAppDispatch();
 
@@ -56,20 +33,19 @@ export const MembersModal: React.FC<MembersModalProps> = ({ status, boardID, clo
     dispatch(addMember({ data: formValues }))
   }
 
-
   return (
     <Dialog
       onClose={close}
-      open={status}
+      open={open}
     >
-      <DialogTitle sx={{ bgcolor: 'primary.dark', color: 'primary.contrastText' }}>
+      <DialogTitle sx={modalTitleStyle}>
         Board Members
         <IconButton color='secondary' onClick={close} sx={{ position: 'absolute', right: 11, top: 11 }}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Typography sx={{ color: 'primary.main', fontWeight: '700', py: 2, borderBottom: '1px solid lightgray' }}>Board owner: {board.owner?.username}</Typography>
+        <Typography sx={ownerNameStyle}>Board owner: {board.owner?.username}</Typography>
         {
           board.members.map(member => {
             return <MemberListItem key={member.BoardMember.id} username={member.username} memberID={member.BoardMember.id} removeMember={handleRemoveMember} />

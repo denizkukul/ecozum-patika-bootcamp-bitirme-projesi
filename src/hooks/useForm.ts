@@ -1,12 +1,9 @@
-import React, { useState, useCallback, useMemo } from "react"
+import React, { useState, useCallback, useMemo } from 'react'
 
-type FormProps<FormType> = {
-  defaultValues: FormType;
-  initialValues?: FormType;
-}
+type FormProps<FormType> = FormType
 
-export const useForm = <FormType>(props: FormProps<FormType>) => {
-  const [formValues, setFormValues] = useState<FormType>(props.initialValues ? props.initialValues : props.defaultValues);
+export const useForm = <FormType>(initialValues: FormProps<FormType>) => {
+  const [formValues, setFormValues] = useState<FormType>(initialValues);
 
   const updateFormValues = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -17,7 +14,7 @@ export const useForm = <FormType>(props: FormProps<FormType>) => {
   )
 
   const clearFormValues = useCallback(() => {
-    setFormValues(props.defaultValues)
+    setFormValues(initialValues)
   }, [])
 
   return useMemo(() => ({ formValues, updateFormValues, clearFormValues }), [formValues]);

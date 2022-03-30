@@ -1,19 +1,22 @@
-import { useAppDispatch } from "../hooks/useAppDispatch"
-import { useAppSelector } from "../hooks/useAppSelector"
-import { CreateListRequest } from "../services/server/controllers/list"
-import { createList } from "../store/lists/listActions";
-import { changeListOrder, changeCardOrder, moveCardToAnotherList } from "../store/app/miscActions"
-import { CreateListForm } from "./CreateListForm"
-import { List } from "./List/List"
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { CreateListRequest } from '../../services/server/controllers/list'
+import { createList } from '../../store/lists/listActions';
+import { changeListOrder, changeCardOrder, moveCardToAnotherList } from '../../store/app/miscActions'
+import { CreateListForm } from './CreateListForm'
+import { List } from '../List/List'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { Box } from "@mui/material"
+import { Box } from '@mui/material'
+import { boardStyle } from './Board.style';
+import { BoardHeader } from './BoardHeader';
 
-type ListContainerProps = {
+type BoardProps = {
   boardID: number;
-  listIDs: number[]
 }
 
-export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }) => {
+export const Board: React.FC<BoardProps> = ({ boardID }) => {
+  const board = useAppSelector(state => state.app.boards[boardID]);
+  const listIDs = board.listIDs;
   const lists = useAppSelector(state => state.app.lists);
   const dispatch = useAppDispatch();
 
@@ -72,12 +75,12 @@ export const ListContainer: React.FC<ListContainerProps> = ({ listIDs, boardID }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="board" direction="horizontal" type="list">
-        {(provided, snapshot) => (
-          <Box sx={{ overflow: 'auto', p: 2, pt: 3, height: '100%', display: 'flex', flex: 1, borderRadius: '10px' }}{...provided.droppableProps} ref={provided.innerRef}>
+      <Droppable droppableId='board' direction='horizontal' type='list'>
+        {(provided) => (
+          <Box sx={boardStyle}{...provided.droppableProps} ref={provided.innerRef}>
             {
               listIDs.map((listID, index) => {
-                return <List key={listID} index={index} {...lists[listID]} />
+                return <List key={listID} index={index} listID={listID} />
               })
             }
             {provided.placeholder}

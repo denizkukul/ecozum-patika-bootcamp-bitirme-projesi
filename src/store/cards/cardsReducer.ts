@@ -1,11 +1,8 @@
-import { createReducer, createSlice } from '@reduxjs/toolkit';
-import label, { NestedLabelResponse } from '../../services/server/controllers/label';
-import { getBoard } from '../boards/boardActions';
-import { getList } from '../lists/listActions';
+import { createReducer } from '@reduxjs/toolkit';
 import { addComment, addLabel, createCard, deleteCard, getCard, removeLabel, updateCard } from './cardActions';
 import { AppState } from '../app/appReducer';
 
-type Label = {
+export type Label = {
   id: number
   title: string
   color: string
@@ -20,7 +17,7 @@ type Label = {
   };
 }
 
-type Comment = {
+export type Comment = {
   id?: number
   message: string
   createdAt?: string

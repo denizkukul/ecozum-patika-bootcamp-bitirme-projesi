@@ -1,5 +1,5 @@
 import { User } from "../services/server/controllers/auth";
-import { setCookie } from "./cookies";
+import { deleteCookie, setCookie } from "./cookies";
 
 export const saveUserData = (arg: { user: User, authPersistence: boolean }) => {
   if (arg.authPersistence) {
@@ -12,4 +12,11 @@ export const saveUserData = (arg: { user: User, authPersistence: boolean }) => {
     sessionStorage.setItem('userID', String(arg.user.id));
     sessionStorage.setItem('username', arg.user.username);
   }
+}
+
+export const clearUserData = () => {
+  sessionStorage.clear();
+  deleteCookie('token');
+  deleteCookie('userID');
+  deleteCookie('username');
 }

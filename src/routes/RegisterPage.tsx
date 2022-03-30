@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom'
-import { Header } from '../components/Header';
+import { Header } from '../components/Layout/Header';
 import { Loading } from '../components/Loading';
-import { RegisterForm } from '../components/RegisterForm';
+import { RegisterForm } from '../components/RegisterForm/RegisterForm';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { RegisterRequest } from '../services/server/controllers/auth/types';

@@ -1,6 +1,6 @@
-import { Box, Button, TextField } from "@mui/material";
-import { useForm } from "../hooks/useForm";
-import { MemberRequest } from "../services/server/controllers/member";
+import { Box, Button, TextField } from '@mui/material';
+import { useForm } from '../../hooks/useForm';
+import { MemberRequest } from '../../services/server/controllers/member';
 
 type AddMemberFormProps = {
   boardID: number
@@ -8,7 +8,7 @@ type AddMemberFormProps = {
 }
 
 export const AddMemberForm: React.FC<AddMemberFormProps> = ({ onSubmit, boardID }) => {
-  const { formValues, updateFormValues, clearFormValues } = useForm({ defaultValues: { username: '', boardId: boardID } });
+  const { formValues, updateFormValues, clearFormValues } = useForm({ username: '', boardId: boardID });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,7 +18,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({ onSubmit, boardID 
 
   return (
     <Box component='form' display='flex' onSubmit={handleSubmit}>
-      <TextField name='username' type='text' value={formValues.username} placeholder="Username" onChange={updateFormValues} />
+      <TextField name='username' type='text' value={formValues.username} placeholder='Username' onChange={updateFormValues} />
       <Button type='submit'>Add</Button>
     </Box>
   )

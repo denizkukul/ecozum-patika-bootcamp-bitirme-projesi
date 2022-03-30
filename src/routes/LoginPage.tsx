@@ -1,24 +1,24 @@
-import { Link } from "react-router-dom"
-import { Loading } from "../components/Loading";
-import { useAppDispatch } from "../hooks/useAppDispatch";
-import { useAppSelector } from "../hooks/useAppSelector";
-import { login } from "../store/auth/authActions";
-import { LoginForm } from "../components/LoginForm";
-import { LoginRequest } from "../services/server/controllers/auth/types";
-import { Header } from "../components/Header";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
+import { Link } from 'react-router-dom'
+import { Loading } from '../components/Loading';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useAppSelector } from '../hooks/useAppSelector';
+import { login } from '../store/auth/authActions';
+import { LoginForm } from '../components/LoginForm/LoginForm';
+import { LoginRequest } from '../services/server/controllers/auth/types';
+import { Header } from '../components/Layout/Header';
+import Typography from '@mui/material/Typography';
+import { Box } from '@mui/material';
 
 
 export const LoginPage = () => {
   const dispatch = useAppDispatch();
-  const authStatus = useAppSelector(state => state.auth.status);
+  const appStatus = useAppSelector(state => state.app.status);
   const handleLogin = (formValues: LoginRequest, authPersistence: boolean) => {
     dispatch(login({ data: formValues, authPersistence }));
   }
 
   return (
-    authStatus === 'idle' ?
+    appStatus === 'idle' ?
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', overflow: 'auto', minHeight: '100vh' }}>
         <Header>
           <Typography color='primary.contrastText' sx={{ fontFamily: 'Poppins', fontSize: '30px', fontWeight: '700', textAlign: 'center', flex: 1 }}>Scrumboard App</Typography>

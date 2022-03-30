@@ -1,14 +1,13 @@
-import Paper from '@mui/material/Paper';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { Logout } from '@mui/icons-material';
 import { useState } from 'react';
-import { Box, Button, Icon, IconButton, Menu } from '@mui/material';
+import { Box, IconButton, Menu } from '@mui/material';
 import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
-import { useAppDispatch } from '../hooks/useAppDispatch';
-import { logout } from '../store/auth/authActions';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { logout } from '../../store/auth/authActions';
 
 export const BoardListMenu: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -28,10 +27,8 @@ export const BoardListMenu: React.FC = () => {
   return (
     <Box>
       <IconButton
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
+        color='secondary'
       >
         <MoreVertRounded sx={{ color: 'primary.contrastText' }} />
       </IconButton>
@@ -39,14 +36,11 @@ export const BoardListMenu: React.FC = () => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
       >
         <MenuList>
           <MenuItem onClick={handleLogout}>
             <ListItemIcon>
-              <Logout fontSize="small" />
+              <Logout fontSize='small' />
             </ListItemIcon>
             <ListItemText>Logout</ListItemText>
           </MenuItem>

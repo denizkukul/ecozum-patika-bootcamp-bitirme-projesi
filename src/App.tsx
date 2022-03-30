@@ -7,7 +7,7 @@ import { RequireAuth } from './components/RequireAuth';
 import { LoginPage } from './routes/LoginPage';
 import { CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { blueGrey, indigo, teal } from '@mui/material/colors';
+import { blueGrey } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {

@@ -4,53 +4,36 @@ import Chip from '@mui/material/Chip/Chip';
 import Modal from '@mui/material/Modal/Modal';
 import TextField from '@mui/material/TextField/TextField';
 import Typography from '@mui/material/Typography/Typography';
+import MuiCard from '@mui/material/Card/Card';
 import { useState } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useForm } from '../../hooks/useForm';
-import { AddLabelRequest, LabelTypeResponse } from '../../services/server/controllers/label';
-import { addComment, addLabel, removeLabel, updateCard } from '../../store/cards/cardActions';
-import { createChecklist } from '../../store/checklists/checklistActions';
-import { AddLabelMenu } from '../AddLabelMenu';
+import { addComment, removeLabel, updateCard } from '../../store/cards/cardActions';
+import { AddLabelMenu } from './AddLabel';
 import { Checklist } from '../Checklist/Checklist';
-import MuiCard from '@mui/material/Card/Card';
-import { CardActions, CardContent, CardHeader, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from '@mui/material';
-import { CheckBoxOutlined, Close, CommentOutlined, Label, LabelOutlined } from '@mui/icons-material';
-import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
-import { borderRadius } from '@mui/system';
-import { CreateChecklistMenu } from '../CreateChecklistMenu';
-import { SetDuedate } from '../SetDuedate';
+import { CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
+import { Close, CommentOutlined, LabelOutlined } from '@mui/icons-material';
+import { CreateChecklistMenu } from './CreateChecklistMenu';
+import { SetDuedate } from './SetDuedate';
+import { modalContainerStyle, modalHeaderStyle, modalStyle } from './CardModal.style';
 
-type CardDetailsProps = {
+type CardModalProps = {
   cardID: number
   open: boolean
   close: () => void
 }
 
-export const CardDetails: React.FC<CardDetailsProps> = ({ cardID, open, close }) => {
+export const CardModal: React.FC<CardModalProps> = ({ cardID, open, close }) => {
   const dispatch = useAppDispatch();
   const username = useAppSelector(state => state.auth.username)!;
   const card = useAppSelector(state => state.app.cards[cardID]);
-  const { formValues, updateFormValues } = useForm({ defaultValues: { title: card.title, description: card.description || '' } });
+  const { formValues, updateFormValues } = useForm({ title: card.title, description: card.description || '' });
   const [newComment, setNewComment] = useState('');
-  const [checklistTitle, setChecklistTitle] = useState('');
-  const [labels, setLabels] = useState(card.labels.map(label => label.CardLabel.labelId));
 
-  // TODO: Multiple select component
-  const handleChange = (e: SelectChangeEvent<typeof labels>) => {
-    const value = e.target.value
-    console.log(value);
-    setLabels(
-      typeof value === 'string' ? (value.split(',').map(id => Number(id))) : value,
-    );
-  };
   const handleUpdateCard = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(updateCard({ cardID: card.id, data: formValues }));
-  }
-
-  const handleAddLabel = (data: AddLabelRequest) => {
-    dispatch(addLabel({ data }))
   }
 
   const handleRemoveLabel = (cardLabelID?: number) => {
@@ -63,33 +46,12 @@ export const CardDetails: React.FC<CardDetailsProps> = ({ cardID, open, close })
     dispatch(addComment({ username, data: { cardId: cardID, message: newComment } }))
   }
 
-  const handleCreateChecklist = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    dispatch(createChecklist({ data: { cardId: cardID, title: checklistTitle } }))
-    setChecklistTitle('');
-  }
-
-
-  const labelTypes = useAppSelector(state => state.app.labelTypes);
-
   return (
-    <Modal sx={{ display: 'flex', minHeight: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center' }} open={open} onClose={close}>
+    <Modal sx={modalContainerStyle} open={open} onClose={close}>
       <Box >
-        <MuiCard sx={{
-          width: 800,
-          height: '80vh',
-          display: 'flex',
-          flexDirection: 'column',
-          borderColor: 'primary.dark'
-        }}
-          variant='outlined'
-        >
+        <MuiCard sx={modalStyle} variant='outlined'>
           <CardHeader
-            sx={{
-              bgcolor: 'primary.dark', p: 1, justifyContent: 'flex-start',
-              '.MuiCardHeader-content': { flex: 0 },
-              '.MuiCardHeader-action': { flex: 1 },
-            }}
+            sx={modalHeaderStyle}
             action={
               <CardActions sx={{ flex: 1 }}>
                 <SetDuedate cardID={cardID} />
@@ -127,10 +89,6 @@ export const CardDetails: React.FC<CardDetailsProps> = ({ cardID, open, close })
                   {
                     card.labels.map(label =>
                       <Chip onDelete={() => handleRemoveLabel(label.CardLabel.id)} key={label.CardLabel.id} label={label.title} color='primary' sx={{ color: 'white', bgcolor: label.color }} />)
-                  }
-                  {
-                    card.labels.length === 0 &&
-                    <Typography lineHeight='32px' color='text.disabled'>This card has no labels.</Typography>
                   }
                 </Box>
               </Box>

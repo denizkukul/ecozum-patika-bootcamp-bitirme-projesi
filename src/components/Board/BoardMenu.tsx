@@ -2,39 +2,30 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { Close, Delete, Logout } from '@mui/icons-material';
+import { Delete, Edit, Logout } from '@mui/icons-material';
 import { useState } from 'react';
-import { Box, Divider, IconButton, List, ListItem, ListItemButton, Menu, Typography } from '@mui/material';
+import { Box, Divider, IconButton, Menu } from '@mui/material';
 import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
-import { useAppDispatch } from '../hooks/useAppDispatch';
-import { addMember, deleteBoard, removeMember } from '../store/boards/boardActions';
-import { logout } from '../store/auth/authActions';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { deleteBoard } from '../../store/boards/boardActions';
+import { logout } from '../../store/auth/authActions';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
-import { MemberRequest } from '../services/server/controllers/member';
-import { useAppSelector } from '../hooks/useAppSelector';
-import { AddMemberForm } from './AddMemberForm';
-import { MembersModal } from './MembersModal/MembersModal';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { MembersModal } from '../MembersModal/MembersModal';
 
 
 type BoardMenuProps = {
   boardID: number
+  openMembersModal: () => void
+  startEdit: () => void
 }
 
-export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID }) => {
+export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID, openMembersModal, startEdit }) => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const board = useAppSelector(state => state.app.boards[boardID]);
   const userID = useAppSelector(state => state.auth.userID);
-
-  const [membersModal, setMembersModal] = useState(false);
-
-  const openMembersModal = () => {
-    setMembersModal(true);
-  };
-  const closeMembersModal = () => {
-    setMembersModal(false);
-  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -51,13 +42,19 @@ export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID }) => {
     dispatch(logout());
   }
 
+  const handleOpenMemberModal = () => {
+    openMembersModal();
+    handleClose();
+  }
+
+  const handleStartEdit = () => {
+    startEdit();
+    handleClose();
+  }
+
   return (
     <Box position='relative'>
-      <MembersModal boardID={boardID} status={membersModal} close={closeMembersModal} />
       <IconButton
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         color='secondary'
       >
@@ -67,14 +64,17 @@ export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID }) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
       >
         <MenuList>
-          <MenuItem onClick={openMembersModal}>
+          <MenuItem onClick={handleStartEdit}>
             <ListItemIcon>
-              <GroupOutlinedIcon fontSize="small" />
+              <Edit fontSize='small' />
+            </ListItemIcon>
+            <ListItemText>Edit</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={handleOpenMemberModal}>
+            <ListItemIcon>
+              <GroupOutlinedIcon fontSize='small' />
             </ListItemIcon>
             <ListItemText>Members</ListItemText>
           </MenuItem>
@@ -82,7 +82,7 @@ export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID }) => {
             board.ownerId === userID &&
             <MenuItem onClick={handleDeleteBoard}>
               <ListItemIcon>
-                <Delete fontSize="small" />
+                <Delete fontSize='small' />
               </ListItemIcon>
               <ListItemText>Delete Board</ListItemText>
             </MenuItem>
@@ -90,7 +90,7 @@ export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID }) => {
           <Divider />
           <MenuItem onClick={handleLogout}>
             <ListItemIcon>
-              <Logout fontSize="small" />
+              <Logout fontSize='small' />
             </ListItemIcon>
             <ListItemText>Logout</ListItemText>
           </MenuItem>

@@ -1,17 +1,16 @@
-import { Button, CardContent, CardHeader, ClickAwayListener, TextField, Typography } from "@mui/material"
-import Box from "@mui/material/Box/Box"
-import { useState } from "react"
-import { useForm } from "../hooks/useForm"
-import { CreateListRequest } from "../services/server/controllers/list"
+import { Button, ClickAwayListener, TextField } from '@mui/material'
+import Box from '@mui/material/Box/Box'
+import { useState } from 'react'
+import { useForm } from '../../hooks/useForm'
 import { Card as MuiCard } from '@mui/material'
-import { Add } from "@mui/icons-material"
+import { Add } from '@mui/icons-material'
 
 type CreateListFormProps = {
   onSubmit: (formValues: { title: string }) => void
 }
 
 export const CreateListForm: React.FC<CreateListFormProps> = ({ onSubmit }) => {
-  const { formValues, updateFormValues, clearFormValues } = useForm({ defaultValues: { title: '' } });
+  const { formValues, updateFormValues, clearFormValues } = useForm({ title: '' });
   const [open, setOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,7 +42,7 @@ export const CreateListForm: React.FC<CreateListFormProps> = ({ onSubmit }) => {
             sx={{ py: 2, minHeight: '64px' }}
             startIcon={<Add sx={{ pb: '1px' }} />}
             fullWidth
-            size="large"
+            size='large'
             onClick={handleClick}
           >
             Create List

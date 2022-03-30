@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { formatBoardData } from '../../helpers/formatData';
 import boardRequests, { BoardRequest } from '../../services/server/controllers/board';
 import memberRequests, { MemberRequest } from '../../services/server/controllers/member';
 

@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { clearUserData } from '../../helpers/clearUserData';
+import { clearUserData } from '../../helpers/userData';
 import { getCookie } from '../../helpers/cookies';
-import { saveUserData } from '../../helpers/saveUserData';
+import { saveUserData } from '../../helpers/userData';
 import { login, logout, register } from './authActions';
 import auth from '../../services/server/controllers/auth';
 

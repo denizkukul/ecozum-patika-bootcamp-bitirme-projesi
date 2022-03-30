@@ -5,9 +5,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { Add, Delete, Edit, Label, LabelOutlined, Logout } from '@mui/icons-material';
 import { useState } from 'react';
 import { Box, Button, Checkbox, Chip, Icon, IconButton, Menu } from '@mui/material';
-import { useAppDispatch } from '../hooks/useAppDispatch';
-import { useAppSelector } from '../hooks/useAppSelector';
-import { addLabel, removeLabel } from '../store/cards/cardActions';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { addLabel, removeLabel } from '../../store/cards/cardActions';
 
 type AddLabelMenuProps = {
   cardID: number
