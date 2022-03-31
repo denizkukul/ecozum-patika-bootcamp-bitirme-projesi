@@ -22,7 +22,6 @@ export type Checklist = {
 }
 
 const initialAppState: AppState = {
-  status: 'idle',
   boardIDs: [],
   labelTypes: [],
   boards: {},

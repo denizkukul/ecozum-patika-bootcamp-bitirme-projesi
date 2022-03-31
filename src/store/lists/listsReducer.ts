@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AppState } from '../app/appReducer';
-import { createList, deleteList, getList, updateList } from './listActions';
+import { createList, deleteList, updateList } from './listActions';
 
 export type List = {
   id: number;
@@ -13,7 +13,6 @@ export type List = {
 }
 
 const initialAppState: AppState = {
-  status: 'idle',
   boardIDs: [],
   labelTypes: [],
   boards: {},
@@ -55,8 +54,5 @@ export const listsReducer = createReducer(
         const listIDs = state.boards[boardID].listIDs;
         const index = listIDs.indexOf(listID);
         listIDs.splice(index, 1);
-      })
-      .addCase(getList.fulfilled, (state, action) => {
-        // TODO
       })
   })

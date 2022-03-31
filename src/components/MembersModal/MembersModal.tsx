@@ -7,10 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box/Box';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { MemberRequest } from '../../services/server/controllers/member';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { AddMemberForm } from '../Board/AddMemberForm';
-import { addMember, removeMember } from '../../store/boards/boardActions';
+import { AddMemberForm } from './AddMemberForm';
 import { MemberListItem } from './MemberListItem';
 import { closeButtonStyle, modalTitleStyle, ownerNameStyle } from './MembersModal.style';
 
@@ -23,15 +20,8 @@ type MembersModalProps = {
 
 export const MembersModal: React.FC<MembersModalProps> = ({ boardID, open, close }) => {
   const board = useAppSelector(state => state.app.boards[boardID]);
-  const dispatch = useAppDispatch();
-
-  const handleRemoveMember = (id: number) => {
-    dispatch(removeMember({ memberID: id, boardID: boardID }))
-  }
-
-  const handleAddMember = (formValues: MemberRequest) => {
-    dispatch(addMember({ data: formValues }))
-  }
+  const userID = useAppSelector(state => state.auth.userID);
+  const isOwner = board.ownerId === userID;
 
   return (
     <Dialog
@@ -48,12 +38,15 @@ export const MembersModal: React.FC<MembersModalProps> = ({ boardID, open, close
         <Typography sx={ownerNameStyle}>Board owner: {board.owner?.username}</Typography>
         {
           board.members.map(member => {
-            return <MemberListItem key={member.BoardMember.id} username={member.username} memberID={member.BoardMember.id} removeMember={handleRemoveMember} />
+            return <MemberListItem key={member.BoardMember.id} username={member.username} memberID={member.BoardMember.id} boardID={boardID} isOwner={isOwner} />
           })
         }
-        <Box mt={2}>
-          <AddMemberForm boardID={boardID} onSubmit={handleAddMember} />
-        </Box>
+        {
+          isOwner &&
+          <Box mt={2}>
+            <AddMemberForm boardID={boardID} ownerName={board.owner?.username} />
+          </Box>
+        }
       </DialogContent>
     </Dialog>
   );

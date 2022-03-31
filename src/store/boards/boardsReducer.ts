@@ -33,7 +33,6 @@ export type Board = {
   }
 }
 const initialAppState: AppState = {
-  status: 'idle',
   boardIDs: [],
   labelTypes: [],
   boards: {},
@@ -78,7 +77,6 @@ export const boardsReducer = createReducer(
         state.boardIDs.splice(index, 1);
       })
       .addCase(getBoard.pending, (state) => {
-        state.status = 'loading';
       })
       .addCase(getBoard.fulfilled, (state, action) => {
         const { boardData, listsData, cardsData, checklistsData } = formatBoardData(action.payload);
@@ -86,10 +84,8 @@ export const boardsReducer = createReducer(
         state.lists = { ...state.lists, ...listsData }
         state.cards = { ...state.cards, ...cardsData }
         state.checklists = { ...state.checklists, ...checklistsData }
-        state.status = 'idle';
       })
       .addCase(getBoardList.pending, (state) => {
-        state.status = 'loading';
       })
       .addCase(getBoardList.fulfilled, (state, action) => {
         const boardIDs: number[] = []
@@ -98,7 +94,6 @@ export const boardsReducer = createReducer(
           boardIDs.push(board.id);
         });
         state.boardIDs = boardIDs;
-        state.status = 'idle';
       })
       .addCase(addMember.fulfilled, (state, action) => {
         const boardID = action.meta.arg.data.boardId;

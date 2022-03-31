@@ -3,7 +3,6 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { BoardMenu } from './BoardMenu';
 import { useRef, useState } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { Header } from '../Layout/Header';
 import { updateBoard } from '../../store/boards/boardActions';
 import { BoardEdit } from './BoardEdit';
 import { Link } from 'react-router-dom';
@@ -24,6 +23,7 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({ boardID }) => {
   const [membersModalStatus, setMembersModalStatus] = useState(false);
   const headerRef = useRef<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
+  const isOwner = (board.ownerId === auth.userID)
 
   const startEdit = () => {
     setEditing(true);
@@ -61,9 +61,12 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({ boardID }) => {
       <Box sx={titleContainerStyle}>
         <Box sx={buttonContainerStyle}>
           <Title>{board.title}</Title>
-          <IconButton onClick={startEdit} color='secondary' sx={editButtonStyle} >
-            <Edit sx={{ color: 'primary.dark' }} />
-          </IconButton>
+          {
+            isOwner &&
+            <IconButton onClick={startEdit} color='secondary' sx={editButtonStyle} >
+              <Edit sx={{ color: 'primary.dark' }} />
+            </IconButton>
+          }
         </Box>
       </Box>
       <Box sx={{ position: 'absolute', right: '20px' }} >

@@ -7,7 +7,6 @@ import { List, listsReducer } from '../lists/listsReducer';
 import { miscReducer } from './miscReducer';
 
 export type AppState = {
-  status: 'loading' | 'idle'
   boardIDs: number[]
   labelTypes: LabelTypeResponse[]
   boards: { [key: number]: Board }
@@ -17,7 +16,6 @@ export type AppState = {
 }
 
 export const initialAppState: AppState = {
-  status: 'idle',
   boardIDs: [],
   labelTypes: [],
   boards: {},

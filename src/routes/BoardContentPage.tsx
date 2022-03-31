@@ -14,7 +14,7 @@ export const BoardContentPage = () => {
   const dispatch = useAppDispatch();
   const params = useParams();
   const boardID = Number(params.boardID);
-  const appStatus = useAppSelector(state => state.app.status);
+  const appStatus = useAppSelector(state => state.status.appStatus);
 
   useEffect(() => {
     dispatch(getBoard({ boardID }));

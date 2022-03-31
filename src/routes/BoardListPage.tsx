@@ -11,7 +11,7 @@ import { AppContainer } from '../components/Layout/AppContainer'
 
 export const BoardListPage = () => {
   const boardIDs = useAppSelector(state => state.app.boardIDs);
-  const appStatus = useAppSelector(state => state.app.status);
+  const appStatus = useAppSelector(state => state.status.appStatus);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

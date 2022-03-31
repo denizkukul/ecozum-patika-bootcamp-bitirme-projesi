@@ -4,7 +4,6 @@ import { AppState } from './appReducer';
 import { changeCardOrder, changeListOrder, getLabelTypes, moveCardToAnotherList } from './miscActions';
 
 const initialAppState: AppState = {
-  status: 'idle',
   boardIDs: [],
   labelTypes: [],
   boards: {},

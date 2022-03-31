@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box/Box'
 import Chip from '@mui/material/Chip/Chip'
+import Tooltip from '@mui/material/Tooltip/Tooltip'
 import { Label } from '../../store/cards/cardsReducer'
 
 type CardLabelsProps = {
@@ -12,7 +13,11 @@ export const CardLabels: React.FC<CardLabelsProps> = ({ cardLabels }) => {
     <Box sx={{ mb: 0.5 }}>
       {
         cardLabels.map(label => {
-          return (<Chip key={label.id} sx={{ bgcolor: label.color, width: '32px', height: '8px', mr: 1 }} />)
+          return (
+            <Tooltip title={label.title}>
+              <Chip key={label.id} sx={{ bgcolor: label.color, width: '32px', height: '8px', mr: 1 }} />
+            </Tooltip>
+          )
         })
       }
     </Box>

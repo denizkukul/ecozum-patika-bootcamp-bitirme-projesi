@@ -1,7 +1,13 @@
 export const inputStyle = {
   bgcolor: 'white',
   width: '60% ',
-  mb: 2
+  mb: 2,
+  '.MuiFormHelperText-root': {
+    bgcolor: 'secondary.main',
+    m: 0,
+    px: 1,
+    py: 0.3
+  }
 }
 
 export const formStyle = {

@@ -9,14 +9,14 @@ import { Loading } from '../components/Loading';
 import { RegisterForm } from '../components/RegisterForm/RegisterForm';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
-import { RegisterRequest } from '../services/server/controllers/auth/types';
-import { register } from '../store/auth/authActions';
+import { clearErrors } from '../store/status/statusReducer';
 
 export const RegisterPage = () => {
-  const dispatch = useAppDispatch();
-  const appStatus = useAppSelector(state => state.app.status);
-  const handleRegister = (formValues: RegisterRequest) => {
-    dispatch(register({ data: formValues }));
+  const appStatus = useAppSelector(state => state.status.appStatus);
+  const dispatch = useAppDispatch()
+
+  const handleClearErrors = () => {
+    dispatch(clearErrors());
   }
 
   return (
@@ -27,11 +27,11 @@ export const RegisterPage = () => {
         </Header>
         <Content>
           <ScrollContainer>
-            <RegisterForm onSubmit={handleRegister}>
+            <RegisterForm>
               <Box display='flex' my={2}>
                 <Typography mr={2}>Already have an account ? </Typography>
                 <Typography color='primary' >
-                  <Link to='/login'>Login</Link>
+                  <Link onClick={handleClearErrors} to='/login'>Login</Link>
                 </Typography>
               </Box>
             </RegisterForm>

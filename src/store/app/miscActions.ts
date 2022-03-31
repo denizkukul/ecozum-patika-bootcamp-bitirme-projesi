@@ -10,7 +10,6 @@ export const getLabelTypes = createAsyncThunk(
   }
 )
 
-// TODO: This can be made more efficient
 export const moveCardToAnotherList = createAsyncThunk(
   'moveCardToAnotherList',
   async (arg: { source: { listID: number, newCardIDs: number[] }, target: { listID: number, newCardIDs: number[] } }) => {

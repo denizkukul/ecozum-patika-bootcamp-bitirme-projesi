@@ -1,4 +1,4 @@
-import { Chip } from '@mui/material';
+import { Chip, Tooltip } from '@mui/material';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { Checklist } from '../../store/checklists/checklistsReducer';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -24,7 +24,9 @@ const getChecklistProgress = (checklist: Checklist) => {
 export const ChecklistChip: React.FC<ChecklistChipProps> = ({ checklistID }) => {
   const checklist = useAppSelector(state => state.app.checklists[checklistID]);
   return (
-    <Chip icon={<CheckCircleOutlineIcon sx={{ fontSize: '19px' }} />} color='primary' sx={chipStyle} label={getChecklistProgress(checklist)} />
+    <Tooltip title={checklist.title}>
+      <Chip icon={<CheckCircleOutlineIcon sx={{ fontSize: '19px' }} />} color='primary' sx={chipStyle} label={getChecklistProgress(checklist)} />
+    </Tooltip>
   )
 }
 

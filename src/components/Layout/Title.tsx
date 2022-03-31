@@ -14,7 +14,7 @@ type TitleProps = {
 }
 
 export const Title: React.FC<TitleProps> = ({ main, children }) => {
-  main && (style.fontSize = '28px');
+  style.fontSize = main ? '28px' : '24px'
   return (
     <Typography color='primary.contrastText' sx={style}>{children}</Typography>
   )

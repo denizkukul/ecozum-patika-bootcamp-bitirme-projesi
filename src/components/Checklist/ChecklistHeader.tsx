@@ -1,12 +1,12 @@
-import { CheckBoxOutlined, DeleteOutlined } from "@mui/icons-material"
-import Box from "@mui/material/Box/Box"
-import IconButton from "@mui/material/IconButton/IconButton"
-import LinearProgress from "@mui/material/LinearProgress/LinearProgress"
-import Typography from "@mui/material/Typography/Typography"
-import { useAppDispatch } from "../../hooks/useAppDispatch"
-import { deleteChecklist } from "../../store/checklists/checklistActions"
-import { Checklist } from "../../store/checklists/checklistsReducer"
-import { progressStyle } from "./Checklist.style"
+import { CheckBoxOutlined, DeleteOutlined } from '@mui/icons-material'
+import Box from '@mui/material/Box/Box'
+import IconButton from '@mui/material/IconButton/IconButton'
+import LinearProgress from '@mui/material/LinearProgress/LinearProgress'
+import Typography from '@mui/material/Typography/Typography'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { deleteChecklist } from '../../store/checklists/checklistActions'
+import { Checklist } from '../../store/checklists/checklistsReducer'
+import { progressStyle } from './Checklist.style'
 
 type ChecklistHeaderProps = {
   checklist: Checklist

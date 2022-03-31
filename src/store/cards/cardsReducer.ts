@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addComment, addLabel, createCard, deleteCard, getCard, removeLabel, updateCard } from './cardActions';
+import { addComment, addLabel, createCard, deleteCard, removeLabel, updateCard } from './cardActions';
 import { AppState } from '../app/appReducer';
 
 export type Label = {
@@ -47,7 +47,6 @@ export type Card = {
 }
 
 const initialAppState: AppState = {
-  status: 'idle',
   boardIDs: [],
   labelTypes: [],
   boards: {},
@@ -101,8 +100,5 @@ export const cardsReducer = createReducer(
         const username = action.meta.arg.username;
         const newComment = { ...action.payload, author: { username } }
         state.cards[cardID].comments.push(newComment);
-      })
-      .addCase(getCard.fulfilled, (state, action) => {
-        // TODO:
       })
   })
