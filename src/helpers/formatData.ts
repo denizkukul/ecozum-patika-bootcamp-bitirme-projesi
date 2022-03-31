@@ -12,11 +12,28 @@ export const formatBoardData = (nestedBoardData: NestedBoardResponse) => {
   const cardsData: { [key: number]: Card } = {};
   const checklistsData: { [key: number]: Checklist } = {};
 
+
   const listIDs: number[] = [];
+
+  // This can be removed if server response is ordered
+  lists.sort((list1, list2) => {
+    if (list1.order && list2.order) return list1.order - list2.order
+    // If order is null move to end of the list
+    else return 1
+  })
+
   lists.forEach(nestedListData => {
     listIDs.push(nestedListData.id);
     const { cards, ...baseListData } = { ...nestedListData };
     const cardIDs: number[] = [];
+
+    // This can be removed if server response is ordered
+    cards.sort((card1, card2) => {
+      if (card1.order && card2.order) return card1.order - card2.order
+      // If order is null move to end of the list
+      else return 1
+    })
+
     cards.forEach(nestedCardData => {
       cardIDs.push(nestedCardData.id);
       const { checklists, ...baseCardData } = { ...nestedCardData };
@@ -40,6 +57,14 @@ export const formatListData = (nestedListData: NestedListResponse) => {
 
   const { cards, ...baseListData } = { ...nestedListData };
   const cardIDs: number[] = [];
+
+  // This can be removed if server response is ordered
+  cards.sort((card1, card2) => {
+    if (card1.order && card2.order) return card1.order - card2.order
+    // If order is null move to end of the list
+    else return 1
+  })
+
   cards.forEach(nestedCardData => {
     cardIDs.push(nestedCardData.id);
     const { checklists, ...baseCardData } = { ...nestedCardData };

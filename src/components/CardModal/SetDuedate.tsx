@@ -34,6 +34,11 @@ export const SetDuedate: React.FC<SetDuedateProps> = ({ cardID }) => {
     handleClose();
   }
 
+  const handleRemoveDuedate = () => {
+    dispatch(updateCard({ cardID, data: { duedate: '1970-01-01' } }));
+    setValue(null);
+  }
+
   return (
     <Box>
       <IconButton
@@ -68,7 +73,10 @@ export const SetDuedate: React.FC<SetDuedateProps> = ({ cardID }) => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-            <Button type='submit' sx={{ my: 1 }} >Set Duedate</Button>
+            <Box display='flex' justifyContent='space-around'>
+              <Button type='submit' sx={{ my: 1 }} >Set</Button>
+              <Button sx={{ my: 1 }} onClick={handleRemoveDuedate} >Remove</Button>
+            </Box>
           </Box>
         </Box>
       </Popover >

@@ -12,7 +12,6 @@ type CreateChecklistProps = {
 }
 
 export const CreateChecklist: React.FC<CreateChecklistProps> = ({ cardID }) => {
-  const card = useAppSelector(state => state.app.cards[cardID]);
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -27,7 +26,7 @@ export const CreateChecklist: React.FC<CreateChecklistProps> = ({ cardID }) => {
 
   const handleAddChecklist = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createChecklist({ data: { cardId: cardID, title: formValues.checklistTitle } }))
+    dispatch(createChecklist({ data: { cardId: cardID, title: formValues.checklistTitle || 'Nameless Checklist' } }))
     handleClose();
     clearFormValues();
   }
@@ -35,17 +34,12 @@ export const CreateChecklist: React.FC<CreateChecklistProps> = ({ cardID }) => {
   return (
     <Box>
       <IconButton
-        aria-controls={open ? 'create-checklist' : undefined}
-        aria-describedby={open ? "create-checklist" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         color='secondary'
       >
         <CheckBoxOutlined />
       </IconButton>
       <Popover
-        id={open ? "create-checklist" : undefined}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}

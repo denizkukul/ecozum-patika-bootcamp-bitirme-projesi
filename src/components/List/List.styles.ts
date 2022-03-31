@@ -15,7 +15,7 @@ export const listDropableStyle = {
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  minHeight: '135px',
+  minHeight: '100px',
   p: 2,
   pb: 0
 }

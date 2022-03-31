@@ -20,10 +20,6 @@ export const Board: React.FC<BoardProps> = ({ boardID }) => {
   const lists = useAppSelector(state => state.app.lists);
   const dispatch = useAppDispatch();
 
-  const handleCreateList = (formValues: { title: string }) => {
-    dispatch(createList({ data: { title: formValues.title, boardId: boardID, order: listIDs.length } }))
-  }
-
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
 
@@ -43,7 +39,6 @@ export const Board: React.FC<BoardProps> = ({ boardID }) => {
       newListIDs.splice(source.index, 1);
       newListIDs.splice(destination.index, 0, Number(draggableId.match(/[0-9]+$/)![0]));
 
-      // TODO: This can me made more efficient
       dispatch(changeListOrder({ boardID, newListIDs }))
       return;
     }
@@ -84,7 +79,7 @@ export const Board: React.FC<BoardProps> = ({ boardID }) => {
               })
             }
             {provided.placeholder}
-            <CreateListForm onSubmit={handleCreateList} />
+            <CreateListForm boardID={boardID} />
           </Box>
         )}
       </Droppable>

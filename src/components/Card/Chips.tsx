@@ -37,7 +37,12 @@ type DuedateChipProps = {
 export const DuedateChip: React.FC<DuedateChipProps> = ({ duedate }) => {
   const formattedDuedate = format(parse(duedate, 'yyyy-mm-dd', new Date()), 'MMM do yy');
   return (
-    <Chip icon={<AccessTimeIcon sx={{ fontSize: '19px' }} />} color='warning' sx={chipStyle} label={formattedDuedate} />
+    <>
+      {
+        (duedate !== '1970-01-01') &&
+        <Chip icon={<AccessTimeIcon sx={{ fontSize: '19px' }} />} color='warning' sx={chipStyle} label={formattedDuedate} />
+      }
+    </>
   )
 }
 

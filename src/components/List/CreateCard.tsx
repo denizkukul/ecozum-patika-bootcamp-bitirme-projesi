@@ -28,10 +28,10 @@ export const CreateCard: React.FC<CreateCardProps> = ({ listID }) => {
     clearFormValues();
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateCard = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setOpen(false);
-    dispatch(createCard({ data: { title: formValues.title, listId: list.id, order: list.cardIDs.length } }))
+    dispatch(createCard({ data: { title: formValues.title || 'Nameless Card', listId: list.id, order: list.cardIDs.length } }))
     clearFormValues();
   }
 
@@ -55,7 +55,7 @@ export const CreateCard: React.FC<CreateCardProps> = ({ listID }) => {
         elevation={0}
         sx={{ '.MuiPaper-root': { borderRadius: '0 0 4px 4px' } }}
       >
-        <Box component='form' sx={createCardStyle} onSubmit={handleSubmit}>
+        <Box component='form' sx={createCardStyle} onSubmit={handleCreateCard}>
           <TextField autoFocus sx={{ bgcolor: 'white' }} name='title' placeholder='Card Title' value={formValues.title} onChange={updateFormValues} />
           <Button type='submit' sx={createCardButtonStyle}>Create</Button>
         </Box>

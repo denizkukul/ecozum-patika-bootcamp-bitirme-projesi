@@ -26,7 +26,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({ checklistID, check
 
   return (
     <Box display='flex' sx={{ py: 1 }} key={checklistItem.id}>
-      <Checkbox sx={{ mr: 1 }} checked={checklistItem.isChecked} onChange={(e) => handleUpdateListItem(checklistItem.id, e.target.checked)} />
+      <Checkbox sx={{ mr: 1, flex: '56px 0 0' }} checked={checklistItem.isChecked} onChange={(e) => handleUpdateListItem(checklistItem.id, e.target.checked)} />
       <Typography sx={itemStyle} p={1} fontWeight={500}>{checklistItem.title}</Typography>
       <IconButton sx={{ flex: '56px 0 0', marginLeft: 2 }} onClick={() => handleDeleteChecklistItem(checklistItem.id)}><DeleteOutlined /></IconButton>
     </Box>

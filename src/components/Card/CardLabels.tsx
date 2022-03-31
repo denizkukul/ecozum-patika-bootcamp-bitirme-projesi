@@ -14,8 +14,8 @@ export const CardLabels: React.FC<CardLabelsProps> = ({ cardLabels }) => {
       {
         cardLabels.map(label => {
           return (
-            <Tooltip title={label.title}>
-              <Chip key={label.id} sx={{ bgcolor: label.color, width: '32px', height: '8px', mr: 1 }} />
+            <Tooltip key={label.id} title={label.title}>
+              <Chip sx={{ bgcolor: label.color, width: '32px', height: '8px', mr: 1 }} />
             </Tooltip>
           )
         })

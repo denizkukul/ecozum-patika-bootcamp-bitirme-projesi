@@ -25,7 +25,7 @@ export const CreateBoard: React.FC = () => {
   const handleCreateBoard = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleClose();
-    dispatch(createBoard({ data: { title: formValues.title } }))
+    dispatch(createBoard({ data: { title: formValues.title || 'Nameless Board' } }))
     clearFormValues();
   }
 

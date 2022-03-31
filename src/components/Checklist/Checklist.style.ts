@@ -11,3 +11,20 @@ export const progressStyle = {
   letterSpacing: '2px',
   fontWeight: '600'
 }
+
+export const editFormStyle = {
+  width: '250px',
+  height: '40px',
+  backgroundColor: 'transparent',
+  display: 'flex',
+  alignItems: 'center',
+}
+
+export const editInputStyle = {
+  bgcolor: 'secondary.main',
+  border: 'none',
+  borderRadius: '4px',
+  fontFamily: 'Roboto',
+  fontSize: '16px',
+  pl: 0.5
+}

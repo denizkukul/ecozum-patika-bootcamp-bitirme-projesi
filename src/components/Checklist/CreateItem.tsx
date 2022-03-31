@@ -16,12 +16,12 @@ export const CreateItem: React.FC<CreateItemProps> = ({ checklistID }) => {
 
   const handleCreateChecklistItem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createChecklistItem({ data: { checklistId: checklistID, title: newItemTitle, isChecked: false } }));
+    dispatch(createChecklistItem({ data: { checklistId: checklistID, title: newItemTitle || 'Nameless Checklist Item', isChecked: false } }));
     setNewItemTitle('');
   }
 
   return (
-    <Box py={1} pl='42px' component='form' sx={{ display: 'flex' }} onSubmit={handleCreateChecklistItem}>
+    <Box py={1} pl='56px' component='form' sx={{ display: 'flex' }} onSubmit={handleCreateChecklistItem}>
       <TextField sx={{ flex: '0px 1 0', ml: 1 }} type='text' value={newItemTitle} placeholder='Item name' onChange={e => setNewItemTitle(e.target.value)} />
       <IconButton type='submit' sx={{ bgcolor: 'secondary.main', flex: '56px 0 0', marginLeft: 2 }}>
         <AddOutlined />
