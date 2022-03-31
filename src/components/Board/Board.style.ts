@@ -1,5 +1,3 @@
-import { display, maxHeight } from "@mui/system"
-
 export const boardStyle = {
   overflow: 'auto',
   p: 2,
@@ -76,4 +74,30 @@ export const editButtonStyle = {
   position: 'absolute',
   right: '-45px',
   bottom: '0'
+}
+
+export const createListStyle = {
+  width: '350px',
+  display: 'flex',
+  alignItems: 'center',
+  bgcolor: 'secondary.main',
+  p: 2,
+}
+
+export const createListButtonStyle = {
+  height: '56px',
+  flex: 1,
+  marginLeft: 2,
+  bgcolor: 'white'
+}
+
+export const newListButtonStyle = {
+  py: 2,
+  minHeight: '64px',
+  width: '350px',
+  bgcolor: 'secondary.main',
+  ':hover': {
+    bgcolor: 'primary.main',
+    color: 'white'
+  }
 }

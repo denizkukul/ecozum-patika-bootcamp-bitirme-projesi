@@ -1,14 +1,12 @@
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAppSelector } from '../../hooks/useAppSelector'
-import { CreateListRequest } from '../../services/server/controllers/list'
-import { createList } from '../../store/lists/listActions';
 import { changeListOrder, changeCardOrder, moveCardToAnotherList } from '../../store/app/miscActions'
 import { CreateListForm } from './CreateListForm'
 import { List } from '../List/List'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { Box } from '@mui/material'
 import { boardStyle } from './Board.style';
-import { BoardHeader } from './BoardHeader';
+import { CreateList } from './CreateList'
 
 type BoardProps = {
   boardID: number;
@@ -79,7 +77,7 @@ export const Board: React.FC<BoardProps> = ({ boardID }) => {
               })
             }
             {provided.placeholder}
-            <CreateListForm boardID={boardID} />
+            <CreateList boardID={boardID} />
           </Box>
         )}
       </Droppable>
