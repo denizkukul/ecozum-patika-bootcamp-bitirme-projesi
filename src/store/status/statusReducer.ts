@@ -27,6 +27,7 @@ export const statusReducer = createReducer(
     builder
       .addCase(getBoard.pending, (state) => {
         state.appStatus = 'loading';
+        state.errorCode = 0
       })
       .addCase(getBoard.fulfilled, (state) => {
         state.appStatus = 'idle';
@@ -39,6 +40,7 @@ export const statusReducer = createReducer(
       })
       .addCase(getBoardList.pending, (state) => {
         state.appStatus = 'loading';
+        state.errorCode = 0
       })
       .addCase(getBoardList.fulfilled, (state) => {
         state.appStatus = 'idle';
@@ -54,6 +56,7 @@ export const statusReducer = createReducer(
       })
       .addMatcher(isAllOf(authAction, isPending), (state) => {
         state.appStatus = 'loading'
+        state.errorCode = 0
       })
       .addMatcher(isAllOf(authAction, isRejected), (state, action) => {
         if (typeof action.payload === 'number') {

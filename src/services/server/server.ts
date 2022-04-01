@@ -16,7 +16,7 @@ export const endpoints = {
   labelTypes: '/label'
 }
 
-const token = getCookie('token') || sessionStorage.getItem('token');
+const token = getCookie('token')
 
 export const server = axios.create({
   baseURL: endpoints.base,

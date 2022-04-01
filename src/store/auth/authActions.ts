@@ -4,7 +4,7 @@ import auth, { LoginRequest, RegisterRequest } from '../../services/server/contr
 
 export const login = createAsyncThunk(
   'authActions/login',
-  async (arg: { data: LoginRequest, authPersistence: boolean }, { rejectWithValue }) => {
+  async (arg: { data: LoginRequest }, { rejectWithValue }) => {
     return auth.login(arg.data).then(response => response.data).catch(error => {
       return rejectWithValue(error.response.status)
     })

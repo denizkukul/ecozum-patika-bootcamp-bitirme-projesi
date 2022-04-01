@@ -11,8 +11,8 @@ export type AuthState = {
 }
 
 export const initialAuthState: AuthState = {
-  userID: Number(getCookie('userID')) || Number(sessionStorage.getItem('userID')),
-  username: getCookie('username') || sessionStorage.getItem('username')
+  userID: Number(getCookie('userID')),
+  username: getCookie('username')
 }
 
 export const authReducer = createReducer(
@@ -20,11 +20,12 @@ export const authReducer = createReducer(
   (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
-        saveUserData({ user: action.payload, authPersistence: action.meta.arg.authPersistence });
+        saveUserData(action.payload);
         state.userID = action.payload.id;
         state.username = action.payload.username;
       })
       .addCase(register.fulfilled, (state, action) => {
+        saveUserData(action.payload);
         state.userID = action.payload.id;
         state.username = action.payload.username;
       })

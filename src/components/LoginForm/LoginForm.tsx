@@ -17,19 +17,14 @@ type Error = {
 
 export const LoginForm: React.FC = ({ children }) => {
   const { formValues, updateFormValues } = useForm({ username: '', password: '' });
-  const [authPersistence, setAuthPersistence] = useState(false);
   const [error, setError] = useState<null | Error>(null)
   const errorCode = useAppSelector(state => state.status.errorCode);
   const dispatch = useAppDispatch();
 
-  const updateCheckboxValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAuthPersistence(e.target.checked);
-  }
-
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateInput()) {
-      dispatch(login({ data: formValues, authPersistence }));
+      dispatch(login({ data: formValues }));
     }
   }
 
@@ -75,7 +70,6 @@ export const LoginForm: React.FC = ({ children }) => {
           helperText={error?.password?.text}
           value={formValues.password}
           onChange={updateFormValues} />
-        <FormControlLabel control={<Checkbox checked={authPersistence} onChange={updateCheckboxValue} />} label='Stay logged in' />
         <Button type='submit'>Login</Button>
         {children}
       </Box>
