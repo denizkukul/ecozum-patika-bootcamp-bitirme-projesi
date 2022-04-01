@@ -1,9 +1,15 @@
 export const listItemStyle = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-start',
   height: '60px',
   borderBottom: '1px solid lightgray',
+}
+
+export const modalStyle = {
+  '.MuiPaper-root': {
+    minWidth: '520px'
+  }
 }
 
 export const modalTitleStyle = {
@@ -11,10 +17,9 @@ export const modalTitleStyle = {
   color: 'primary.contrastText'
 }
 
-export const ownerNameStyle = {
+export const userNameStyle = {
   color: 'primary.main',
   fontWeight: '700',
-  borderBottom: '1px solid lightgray',
   py: 2,
   minWidth: '300px'
 }

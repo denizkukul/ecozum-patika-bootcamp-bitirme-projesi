@@ -1,4 +1,5 @@
 import { CommentOutlined } from '@mui/icons-material'
+import { Avatar, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box/Box'
 import Button from '@mui/material/Button/Button';
 import TextField from '@mui/material/TextField/TextField';
@@ -8,6 +9,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { addComment } from '../../store/cards/cardActions';
 import { Comment } from '../../store/cards/cardsReducer';
+import { commentStyle, userNameStyle } from './CardModal.style';
 
 type CommnetsProps = {
   cardID: number
@@ -21,6 +23,7 @@ export const Comments: React.FC<CommnetsProps> = ({ cardID, comments }) => {
 
   const handleAddComment = () => {
     dispatch(addComment({ username, data: { cardId: cardID, message: newComment } }))
+    setNewComment('');
   }
 
   return (
@@ -33,9 +36,13 @@ export const Comments: React.FC<CommnetsProps> = ({ cardID, comments }) => {
         {
           comments.map(comment => {
             return (
-              <Box key={comment.id} p={1} borderRadius={1} border='1px solid lightgray' my={2}>
-                <Typography color='primary.main'>{comment.author.username}:</Typography>
-                <Typography pt={1}>{comment.message}</Typography>
+              <Box key={comment.id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Tooltip title={comment.author.username}>
+                  <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>{(comment.author.username.slice(0, 1)).toUpperCase()}</Avatar>
+                </Tooltip>
+                <Box sx={commentStyle}>
+                  <Typography>{comment.message}</Typography>
+                </Box>
               </Box>
             )
           })
@@ -45,9 +52,9 @@ export const Comments: React.FC<CommnetsProps> = ({ cardID, comments }) => {
           <Typography sx={{ my: 1 }} color='text.disabled'>This card has no comments.</Typography>
         }
       </Box>
-      <Box>
+      <Box sx={{ display: 'flex' }}>
         <TextField sx={{ mt: 1 }} fullWidth multiline variant='outlined' label='New Comment' value={newComment} onChange={(e) => setNewComment(e.target.value)} />
-        <Button sx={{ mx: 2 }} onClick={handleAddComment}>Send</Button>
+        <Button sx={{ ml: 2, mt: 'auto', height: '56px' }} onClick={handleAddComment}>Send</Button>
       </Box>
     </Box >
   )

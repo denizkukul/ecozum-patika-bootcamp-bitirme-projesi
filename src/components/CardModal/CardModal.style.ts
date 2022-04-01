@@ -85,3 +85,18 @@ export const duedateFormContStyle = {
   flexDirection: 'column',
   pt: 3
 }
+
+export const userNameStyle = {
+  color: 'primary.main',
+  fontWeight: '700',
+  mt: 1,
+  minWidth: '300px'
+}
+
+export const commentStyle = {
+  p: '16.5px 14px',
+  flex: 1,
+  maxWidth: '60%',
+  borderRadius: '0 100px 100px 0',
+  border: '1px solid lightgray'
+}
