@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box/Box'
-import { DeleteOutlined } from '@mui/icons-material'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { ChecklistHeader } from './ChecklistHeader'
 import { CreateItem } from './CreateItem'

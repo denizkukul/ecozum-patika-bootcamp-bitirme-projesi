@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { addComment } from '../../store/cards/cardActions';
 import { Comment } from '../../store/cards/cardsReducer';
-import { commentStyle, userNameStyle } from './CardModal.style';
+import { commentStyle } from './CardModal.style';
 
 type CommnetsProps = {
   cardID: number

@@ -2,11 +2,9 @@ import { DeleteOutlined } from '@mui/icons-material'
 import Box from '@mui/material/Box/Box'
 import Checkbox from '@mui/material/Checkbox/Checkbox'
 import IconButton from '@mui/material/IconButton/IconButton'
-import Typography from '@mui/material/Typography/Typography'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { deleteChecklistItem, updateChecklistItem } from '../../store/checklists/checklistActions'
 import { ChecklistItem as ChecklistItemType } from '../../store/checklists/checklistsReducer'
-import { itemStyle } from './Checklist.style'
 import { ListItemEdit } from './ListItemEdit'
 
 type ChecklistItemProps = {

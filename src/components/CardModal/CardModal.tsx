@@ -1,4 +1,3 @@
-import Modal from '@mui/material/Modal/Modal';
 import Typography from '@mui/material/Typography/Typography';
 import MuiCard from '@mui/material/Card/Card';
 import { useAppSelector } from '../../hooks/useAppSelector';

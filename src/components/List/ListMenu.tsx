@@ -1,4 +1,3 @@
-import Paper from '@mui/material/Paper';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -9,7 +8,6 @@ import { Box, IconButton, Menu } from '@mui/material';
 import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { deleteList } from '../../store/lists/listActions';
-import { ListEdit } from './ListEdit';
 
 type ListMenuProps = {
   listID: number

@@ -6,6 +6,29 @@ import { CreateCard } from './CreateCard';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { listDropableStyle, listStyle } from './List.styles';
 import { ListHeader } from './ListHeader';
+import { useMemo } from 'react';
+
+type CardContainerProps = {
+  cardIDs: number[];
+}
+
+// Moved mapping cardIDs outside list compoent
+export const CardContainer: React.FC<CardContainerProps> = ({ cardIDs }) => {
+  return (
+    <>
+      {
+        // Optimized drag performance by preventing renders caused by dropable render function
+        // CardIDs of the list cannot change during list drag
+        useMemo(() => {
+          return cardIDs.map((cardID, index) => {
+            return <Card key={cardID} index={index} cardID={cardID} />
+          })
+        }, [cardIDs])
+      }
+    </>
+  )
+}
+
 
 type ListProps = {
   index: number
@@ -25,11 +48,7 @@ export const List: React.FC<ListProps> = ({ index, listID, isOwner }) => {
             <Droppable droppableId={String(list.id)}>
               {(provided) =>
                 <Box sx={listDropableStyle} ref={provided.innerRef} {...provided.droppableProps}>
-                  {
-                    list.cardIDs.map((cardID, index) => {
-                      return <Card key={cardID} index={index} cardID={cardID} />
-                    })
-                  }
+                  <CardContainer cardIDs={list.cardIDs} />
                   {provided.placeholder}
                 </Box>
               }
@@ -48,11 +67,7 @@ export const List: React.FC<ListProps> = ({ index, listID, isOwner }) => {
         <Droppable droppableId={String(list.id)}>
           {(provided) =>
             <Box sx={listDropableStyle} ref={provided.innerRef} {...provided.droppableProps}>
-              {
-                list.cardIDs.map((cardID, index) => {
-                  return <Card key={cardID} index={index} cardID={cardID} />
-                })
-              }
+              <CardContainer cardIDs={list.cardIDs} />
               {provided.placeholder}
             </Box>
           }

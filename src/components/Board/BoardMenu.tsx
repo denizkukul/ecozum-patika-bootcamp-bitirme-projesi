@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Box, Divider, IconButton, Menu } from '@mui/material';
 import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { deleteBoard, removeMember } from '../../store/boards/boardActions';
+import { removeMember } from '../../store/boards/boardActions';
 import { logout } from '../../store/auth/authActions';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { useAppSelector } from '../../hooks/useAppSelector';

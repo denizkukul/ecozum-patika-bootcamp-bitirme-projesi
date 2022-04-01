@@ -1,11 +1,7 @@
 import { useState } from 'react';
-import { Box, IconButton, Input, ListItemIcon, ListItemText, MenuItem, Popover, TextField } from '@mui/material';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { updateList } from '../../store/lists/listActions';
-import { CancelOutlined, Edit } from '@mui/icons-material';
-import { useForm } from '../../hooks/useForm';
-import { editFormStyle, editInputStyle, listHeaderStyle } from './List.styles';
+import { Box, IconButton, Input, Popover } from '@mui/material';
+import { CancelOutlined } from '@mui/icons-material';
+import { editFormStyle, editInputStyle } from './List.styles';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 type ListEditProps = {
