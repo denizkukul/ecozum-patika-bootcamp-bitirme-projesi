@@ -3,55 +3,56 @@ body,
 div,
 form,
 p,
-pre
-{
-    font-size: 100%;
-    font-weight: normal;
+pre {
+  font-size: 100%;
+  font-weight: normal;
 
-    font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'Roboto', 'Oxygen',
+  font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 
-    vertical-align: baseline;
+  vertical-align: baseline;
 
-    border: 0;
-    outline: 0;
-    background: transparent;
+  border: 0;
+  outline: 0;
+  background: transparent;
 }
 
 img,
-svg
-{
-    border: 0;
+svg {
+  border: 0;
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 *::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  *::-webkit-scrollbar-track {
-    border-radius: 8px;
-  }
-  *::-webkit-scrollbar-thumb {
-    background: lightgray; 
-    border-radius: 8px;
-  }
-  *::-webkit-scrollbar-thumb:hover {
-    background: lightgray; 
-  }
-  
-  html {
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -webkit-tap-highlight-color: transparent;
-  }
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #607d8b;
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #37474f;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-tap-highlight-color: transparent;
+}

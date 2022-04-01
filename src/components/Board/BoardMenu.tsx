@@ -18,9 +18,10 @@ type BoardMenuProps = {
   boardID: number
   openMembersModal: () => void
   startEdit: () => void
+  openDeleteModal: () => void
 }
 
-export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID, openMembersModal, startEdit }) => {
+export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID, openMembersModal, openDeleteModal, startEdit }) => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -36,10 +37,6 @@ export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID, openMembersModal,
     setAnchorEl(null);
   };
 
-  const handleDeleteBoard = () => {
-    dispatch(deleteBoard({ boardID }));
-  }
-
   const handleLogout = () => {
     dispatch(logout());
   }
@@ -49,6 +46,10 @@ export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID, openMembersModal,
     handleClose();
   }
 
+  const handleOpenDeleteModal = () => {
+    openDeleteModal();
+    handleClose();
+  }
   const handleStartEdit = () => {
     startEdit();
     handleClose();
@@ -91,7 +92,7 @@ export const BoardMenu: React.FC<BoardMenuProps> = ({ boardID, openMembersModal,
           </MenuItem>
           {
             isOwner &&
-            <MenuItem onClick={handleDeleteBoard}>
+            <MenuItem onClick={handleOpenDeleteModal}>
               <ListItemIcon>
                 <Delete fontSize='small' />
               </ListItemIcon>

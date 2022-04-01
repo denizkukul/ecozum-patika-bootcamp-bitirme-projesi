@@ -1,7 +1,6 @@
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { changeListOrder, changeCardOrder, moveCardToAnotherList } from '../../store/app/miscActions'
-import { CreateListForm } from './CreateListForm'
 import { List } from '../List/List'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { Box } from '@mui/material'
@@ -14,9 +13,11 @@ type BoardProps = {
 
 export const Board: React.FC<BoardProps> = ({ boardID }) => {
   const board = useAppSelector(state => state.app.boards[boardID]);
-  const listIDs = board.listIDs;
   const lists = useAppSelector(state => state.app.lists);
+  const userID = useAppSelector(state => state.auth.userID);
   const dispatch = useAppDispatch();
+  const listIDs = board.listIDs;
+  const isOwner = (board.ownerId === userID);
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -73,7 +74,7 @@ export const Board: React.FC<BoardProps> = ({ boardID }) => {
           <Box sx={boardStyle}{...provided.droppableProps} ref={provided.innerRef}>
             {
               listIDs.map((listID, index) => {
-                return <List key={listID} index={index} listID={listID} />
+                return <List key={listID} index={index} listID={listID} isOwner={isOwner} />
               })
             }
             {provided.placeholder}

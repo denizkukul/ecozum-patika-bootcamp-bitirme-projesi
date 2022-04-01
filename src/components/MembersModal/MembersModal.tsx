@@ -11,7 +11,6 @@ import { AddMemberForm } from './AddMemberForm';
 import { MemberListItem } from './MemberListItem';
 import { closeButtonStyle, modalTitleStyle, ownerNameStyle } from './MembersModal.style';
 
-
 type MembersModalProps = {
   open: boolean
   boardID: number

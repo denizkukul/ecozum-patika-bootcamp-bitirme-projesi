@@ -5,7 +5,8 @@ export type CreateChecklistItemRequest = {
 }
 
 export type UpdateChecklistItemRequest = {
-  isChecked: boolean
+  title?: string
+  isChecked?: boolean
 }
 
 export type ChecklistItemResponse = {

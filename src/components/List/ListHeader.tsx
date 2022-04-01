@@ -11,9 +11,10 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 type ListHeaderProps = {
   listID: number
   dragHandleProps?: DraggableProvidedDragHandleProps
+  isOwner: boolean
 }
 
-export const ListHeader: React.FC<ListHeaderProps> = ({ listID, dragHandleProps }) => {
+export const ListHeader: React.FC<ListHeaderProps> = ({ listID, dragHandleProps, isOwner }) => {
   const list = useAppSelector(state => state.app.lists[listID]);
   const dispatch = useAppDispatch();
   const [editing, setEditing] = useState(false);
@@ -36,7 +37,8 @@ export const ListHeader: React.FC<ListHeaderProps> = ({ listID, dragHandleProps 
     <Box ref={headerRef}>
       <ListEdit title={list.title} open={editing} anchor={headerRef.current!} saveEdit={saveEdit} cancelEdit={cancelEdit} />
       <MuiCardHeader
-        action={<ListMenu listID={list.id} startEdit={startEdit} />}
+        // If current user is not the board owner disable edit or deleting lists
+        action={isOwner && <ListMenu listID={list.id} startEdit={startEdit} />}
         title={list.title}
         {...dragHandleProps}
         sx={listHeaderStyle}

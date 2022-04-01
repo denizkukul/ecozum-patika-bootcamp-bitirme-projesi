@@ -9,8 +9,8 @@ export const boardStyle = {
 
 export const editFormStyle = {
   bgcolor: 'primary.dark',
-  maxHeight: '32px',
-  pl: '82px',
+  maxHeight: '30px',
+  pl: '80px',
   overflow: 'hidden',
   display: 'flex',
   alignItems: 'center'
@@ -27,8 +27,8 @@ export const editInputStyle = {
     '.MuiInput-input': {
       p: 0,
       textAlign: 'center',
-      maxWidth: '200px',
-      maxHeight: '30px'
+      maxWidth: '300px',
+      maxHeight: '32px'
     }
   }
 }
@@ -78,6 +78,7 @@ export const editButtonStyle = {
 
 export const createListStyle = {
   width: '350px',
+  minWidth: '350px',
   display: 'flex',
   alignItems: 'center',
   bgcolor: 'secondary.main',
@@ -91,13 +92,9 @@ export const createListButtonStyle = {
   bgcolor: 'white'
 }
 
-export const newListButtonStyle = {
-  py: 2,
-  minHeight: '64px',
-  width: '350px',
+export const newListButtonContStyle = {
   bgcolor: 'secondary.main',
-  ':hover': {
-    bgcolor: 'primary.main',
-    color: 'white'
-  }
+  height: '64px',
+  width: '350px',
+  borderRadius: '4px'
 }

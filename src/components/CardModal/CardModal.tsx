@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography/Typography';
 import MuiCard from '@mui/material/Card/Card';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { AddLabel } from './AddLabel';
-import { CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
+import { CardActions, CardContent, CardHeader, Dialog, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { CreateChecklist } from './CreateChecklistMenu';
 import { SetDuedate } from './SetDuedate';
@@ -23,7 +23,7 @@ export const CardModal: React.FC<CardModalProps> = ({ cardID, open, close }) => 
   const card = useAppSelector(state => state.app.cards[cardID]);
 
   return (
-    <Modal sx={modalContainerStyle} open={open} onClose={close}>
+    <Dialog sx={modalContainerStyle} open={open} onClose={close}>
       <MuiCard sx={modalStyle} variant='outlined'>
         <CardHeader
           sx={modalHeaderStyle}
@@ -46,6 +46,6 @@ export const CardModal: React.FC<CardModalProps> = ({ cardID, open, close }) => 
           <Comments cardID={cardID} comments={card.comments} />
         </CardContent>
       </MuiCard>
-    </Modal >
+    </Dialog >
   )
 }

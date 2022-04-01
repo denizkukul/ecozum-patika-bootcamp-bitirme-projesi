@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, IconButton, Input, Popover } from '@mui/material';
-import { CancelOutlined, Edit } from '@mui/icons-material';
+import { CancelOutlined } from '@mui/icons-material';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { editFormStyle, editInputStyle } from './Checklist.style';
 
@@ -46,7 +46,6 @@ export const ChecklistEdit: React.FC<ListEditProps> = ({ title, anchor, open, ca
       anchorOrigin={{ vertical: 'center', horizontal: 'left', }}
       transformOrigin={{ vertical: 'center', horizontal: -30, }}
       elevation={0}
-      sx={{ '.MuiPaper-root': { borderRadius: '4px 4px 0 0' } }}
     >
       <Box sx={editFormStyle} component='form' onSubmit={handleSubmit}>
         <Input autoFocus disableUnderline fullWidth name='title' placeholder='List Title' value={newTitle} onChange={handleChange} onFocus={handleFocus} sx={editInputStyle} />

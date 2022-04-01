@@ -19,7 +19,7 @@ export const Checklist: React.FC<ChecklistProps> = ({ checklistID }) => {
         {
           checklist.items?.map(item => {
             return (
-              <ChecklistItem checklistID={checklistID} checklistItem={item} />
+              <ChecklistItem key={item.id} checklistID={checklistID} checklistItem={item} />
             )
           })
         }

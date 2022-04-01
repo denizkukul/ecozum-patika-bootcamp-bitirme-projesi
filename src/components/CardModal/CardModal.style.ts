@@ -3,7 +3,10 @@ export const modalContainerStyle = {
   minHeight: '100vh',
   width: '100%',
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  '.MuiPaper-root': {
+    maxWidth: 'none'
+  }
 }
 
 export const modalStyle = {
@@ -24,7 +27,7 @@ export const modalContentStyle = {
   bgcolor: 'background.paper',
   overflow: 'overlay',
   height: 'max-content',
-  px: 3
+  px: 3,
 }
 
 export const cardTitleStyle = {

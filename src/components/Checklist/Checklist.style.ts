@@ -1,8 +1,7 @@
 export const itemStyle = {
-  p: '16.5px 14px',
   width: '100%',
   borderRadius: '5px',
-  border: '1px solid lightgray'
+  px: '14px'
 }
 
 export const progressStyle = {
@@ -13,7 +12,7 @@ export const progressStyle = {
 }
 
 export const editFormStyle = {
-  width: '250px',
+  width: '400px',
   height: '40px',
   backgroundColor: 'transparent',
   display: 'flex',
@@ -27,4 +26,15 @@ export const editInputStyle = {
   fontFamily: 'Roboto',
   fontSize: '16px',
   pl: 0.5
+}
+
+export const itemContStyle = {
+  flex: 1,
+  py: 1,
+  position: 'relative',
+  alignItems: 'center',
+  border: '1px solid lightgray',
+  p: 0,
+  height: '56px',
+  borderRadius: '4px'
 }

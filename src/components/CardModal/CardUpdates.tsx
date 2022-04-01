@@ -18,7 +18,7 @@ export const CardUpdates: React.FC<CardUpdatesProps> = ({ cardID, title, descrip
 
   const handleUpdateCard = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(updateCard({ cardID, data: formValues }));
+    dispatch(updateCard({ cardID, data: { title: formValues.title || 'Nameless Card', description: formValues.description } }));
   }
   return (
     <Box component='form' sx={cardUpdateStyle} onSubmit={handleUpdateCard}>

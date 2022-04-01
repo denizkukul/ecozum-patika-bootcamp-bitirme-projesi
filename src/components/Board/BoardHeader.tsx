@@ -11,16 +11,20 @@ import { Edit } from '@mui/icons-material';
 import { backButtonStyle, backLinkStyle, buttonContainerStyle, editButtonStyle, titleContainerStyle } from './Board.style';
 import { Title } from '../Layout/Title';
 import { MembersModal } from '../MembersModal/MembersModal';
+import { Pending } from '../Pending';
+import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 
 type BoardHeaderProps = {
   boardID: number
 }
 
 export const BoardHeader: React.FC<BoardHeaderProps> = ({ boardID }) => {
+  const pending = useAppSelector(state => state.status.pending);
   const board = useAppSelector(state => state.app.boards[boardID]);
   const auth = useAppSelector(state => state.auth);
   const [editing, setEditing] = useState(false);
   const [membersModalStatus, setMembersModalStatus] = useState(false);
+  const [deleteModalStatus, setDeleteModalStatus] = useState(false);
   const headerRef = useRef<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const isOwner = (board.ownerId === auth.userID)
@@ -45,10 +49,18 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({ boardID }) => {
     setMembersModalStatus(false);
   }
 
+  const openDeleteModal = () => {
+    setDeleteModalStatus(true);
+  }
+  const closeDeleteModal = () => {
+    setDeleteModalStatus(false);
+  }
+
   return (
     <Box ref={headerRef} sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
       <BoardEdit title={board.title} open={editing} anchor={headerRef.current!} saveEdit={saveEdit} cancelEdit={cancelEdit} />
       <MembersModal open={membersModalStatus} close={closeMembersModal} boardID={boardID} />
+      <ConfirmDeleteModal open={deleteModalStatus} close={closeDeleteModal} boardID={boardID} />
       <Box sx={backButtonStyle}>
         <Link to={`/user${auth.userID}`} style={backLinkStyle}>
           <Button
@@ -69,12 +81,15 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({ boardID }) => {
           }
         </Box>
       </Box>
-      <Box sx={{ position: 'absolute', right: '20px' }} >
-        <BoardMenu boardID={boardID} openMembersModal={openMembersModal} startEdit={startEdit} />
-      </Box>
-      <Box>
-
-      </Box>
+      {
+        pending ?
+          <Box sx={{ position: 'absolute', right: '24px' }}>
+            <Pending />
+          </Box> :
+          <Box sx={{ position: 'absolute', right: '20px' }} >
+            <BoardMenu boardID={boardID} openMembersModal={openMembersModal} openDeleteModal={openDeleteModal} startEdit={startEdit} />
+          </Box>
+      }
     </Box>
   )
 }

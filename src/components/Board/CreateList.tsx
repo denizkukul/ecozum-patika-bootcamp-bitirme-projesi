@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { useForm } from '../../hooks/useForm'
 import { createList } from '../../store/lists/listActions'
-import { createListButtonStyle, createListStyle, newListButtonStyle } from './Board.style'
+import { createListButtonStyle, createListStyle, newListButtonContStyle } from './Board.style'
 
 type CreateListProps = {
   boardID: number
@@ -36,9 +36,9 @@ export const CreateList: React.FC<CreateListProps> = ({ boardID }) => {
   }
 
   return (
-    <Box ref={createListRef}>
+    <Box ref={createListRef} sx={newListButtonContStyle}>
       <Button
-        sx={newListButtonStyle}
+        sx={{ height: '100%', minWidth: '350px' }}
         startIcon={<Add sx={{ pb: '1px' }} />}
         fullWidth
         size='large'
